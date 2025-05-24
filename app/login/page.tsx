@@ -1,10 +1,10 @@
 import React from 'react';
-import Dashboard from "@/app/components/view/dashboard/Dashboard";
+import LoginForm from "@/app/components/view/login/LoginForm";
 
 function Page() {
     return (
         <div>
-          <Dashboard/>
+            <LoginForm/>
         </div>
     );
 }
