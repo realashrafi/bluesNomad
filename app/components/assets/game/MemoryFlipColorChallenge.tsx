@@ -194,46 +194,66 @@ export default function MemoryFlipColorChallenge() {
     };
 
     return (
-        <div className="flex mx-auto flex-col items-center justify-center bg-gray-100 rounded-lg shadow-lg p-4 w-full max-w-3xl min-h-screen">
+        <div className="flex mx-auto flex-col items-center justify-center rounded-lg  p-4 w-full max-w-3xl min-h-screen">
             <div className="w-full text-center mb-4">
-                <h1 className="text-xl md:text-2xl font-bold text-gray-800">بازی چالش حافظه رنگی</h1>
-                <p className="text-gray-600 mt-1 text-base md:text-lg" dir="rtl">{message}</p>
+                <h1 className="text-xl md:text-2xl font-bold ">بازی چالش حافظه رنگی</h1>
+                <p className=" mt-1 text-base md:text-lg" dir="rtl">{message}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row justify-between w-full mb-4 space-y-2 sm:space-y-0 sm:space-x-4">
-                <div className="flex items-center bg-blue-100 rounded-lg px-3 py-1">
-                    <Zap className="text-yellow-500 mr-1" size={20} />
-                    <span className="font-bold text-sm md:text-base">امتیاز: {score}</span>
-                </div>
-                <div className="flex items-center bg-green-100 rounded-lg px-3 py-1">
-                    <Award className="text-purple-500 mr-1" size={20} />
-                    <span className="font-bold text-sm md:text-base">بهترین: {bestScore}</span>
-                </div>
-                <div className="flex items-center bg-purple-100 rounded-lg px-3 py-1">
-                    <Timer className="text-red-500 mr-1" size={20} />
-                    <span className="font-bold text-sm md:text-base">مرحله: {level}</span>
-                </div>
-                <div className="flex items-center bg-red-100 rounded-lg px-3 py-1">
-                    <Heart className="text-red-500 mr-1" size={20} />
-                    <span className="font-bold text-sm md:text-base">قلب: {lives}</span>
-                </div>
-                <div className="flex items-center bg-yellow-100 rounded-lg px-3 py-1">
-                    <Eye className="text-indigo-500 mr-1" size={20} />
-                    <span className="font-bold text-sm md:text-base">راهنمایی: {hints}</span>
-                </div>
+                <button
+                    className="bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative  py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                    <div className="flex items-center  rounded-lg px-3 py-1">
+                        <Zap className="text-yellow-500 mr-1" size={20} />
+                        <span className="font-bold text-sm md:text-base">امتیاز: {score}</span>
+                    </div>
+                </button>
+                <button
+                    className="bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative  py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                    <div className="flex items-center  rounded-lg px-3 py-1">
+                        <Award className="text-purple-500 mr-1" size={20} />
+                        <span className="font-bold text-sm md:text-base">بهترین: {bestScore}</span>
+                    </div>
+                </button>
+                <button
+                    className="bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative  py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                    <div className="flex items-center  rounded-lg px-3 py-1">
+                        <Timer className="text-red-500 mr-1" size={20} />
+                        <span className="font-bold text-sm md:text-base">مرحله: {level}</span>
+                    </div>
+                </button>
+                <button
+                    className="bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative  py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                    <div className="flex items-center  rounded-lg px-3 py-1">
+                        <Heart className="text-red-500 mr-1" size={20} />
+                        <span className="font-bold text-sm md:text-base">قلب: {lives}</span>
+                    </div>
+                </button>
+                <button
+                    className="bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative  py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                    <div className="flex items-center  rounded-lg px-3 py-1">
+                        <Eye className="text-indigo-500 mr-1" size={20} />
+                        <span className="font-bold text-sm md:text-base">راهنمایی: {hints}</span>
+                    </div>
+                </button>
             </div>
 
             {memorizePhase && (
                 <div className="text-center mb-4">
                     <div className="text-2xl md:text-3xl font-bold text-red-600">{memorizeTime}</div>
-                    <p className="text-xs md:text-sm text-gray-600">ثانیه تا شروع</p>
+                    <p className="text-xs md:text-sm ">ثانیه تا شروع</p>
                 </div>
             )}
 
             {!memorizePhase && !gameOver && (
                 <div className="text-center mb-4">
-                    <div className="text-2xl md:text-3xl font-bold text-blue-600">{stageTime}</div>
-                    <p className="text-xs md:text-sm text-gray-600">ثانیه باقی‌مانده</p>
+                    <div className="text-2xl md:text-3xl font-bold text-green-400">{stageTime}</div>
+                    <p className="text-xs md:text-sm ">ثانیه باقی‌مانده</p>
                 </div>
             )}
 
@@ -259,17 +279,17 @@ export default function MemoryFlipColorChallenge() {
 
             <div className="flex flex-col sm:flex-row justify-center mt-6 space-y-2 sm:space-y-0 sm:space-x-4">
                 {!gameStarted ? (
-                    <button
-                        onClick={initGame}
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow transition-colors"
-                    >
-                        شروع بازی
-                    </button>
+                        <button
+                            onClick={initGame}
+                            className="bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                            <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                            شروع بازی
+                        </button>
                 ) : gameOver ? (
                     <button
                         onClick={restartGame}
-                        className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow transition-colors flex items-center"
-                    >
+                        className="flex items-center bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                        <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                         <RotateCcw className="mr-1" size={20} />
                         بازی دوباره
                     </button>
@@ -277,16 +297,16 @@ export default function MemoryFlipColorChallenge() {
                     <>
                         <button
                             onClick={useHint}
-                            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors flex items-center disabled:opacity-50"
                             disabled={memorizePhase || hints === 0 || gameOver}
-                        >
+                            className="flex items-center bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                            <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                             <Eye className="mr-1" size={20} />
                             استفاده از راهنمایی
                         </button>
                         <button
                             onClick={restartGame}
-                            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors flex items-center"
-                        >
+                            className="flex items-center bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                            <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                             <RotateCcw className="mr-1" size={20} />
                             شروع مجدد
                         </button>
@@ -294,7 +314,7 @@ export default function MemoryFlipColorChallenge() {
                 )}
             </div>
 
-            <div className="mt-4 text-xs md:text-sm text-gray-600 text-center" dir="rtl">
+            <div className="mt-4 text-xs md:text-sm  text-center" dir="rtl">
                 رنگ‌ها را به خاطر بسپار و جفت‌ها را پیدا کن! با هر مرحله، تعداد کارت‌ها افزایش می‌یابد.
             </div>
         </div>
