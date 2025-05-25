@@ -1,10 +1,11 @@
 import React from 'react';
-import Dashboard from "@/app/components/view/dashboard/Dashboard";
+import MemoryFlipColorChallenge from "@/app/components/assets/game/MemoryFlipColorChallenge";
 
 function Page() {
+
     return (
         <div>
-            <Dashboard/>
+            <MemoryFlipColorChallenge/>
         </div>
     );
 }

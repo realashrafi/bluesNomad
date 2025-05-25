@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
-// import { User } from '@/models/User'; // مدل کاربر
 
 async function connectDB() {
     if (mongoose.connection.readyState === 0) {
