@@ -4,10 +4,11 @@ import client from "@/lib/mongodb";
 
 export async function POST(req: Request) {
     try {
-        const { email, password } = await req.json();
+        const { email, password, name } = await req.json();
 
-        if (!email || !password) {
-            return NextResponse.json({ error: "ایمیل یا پسورد خالیه!" }, { status: 400 });
+        // اعتبارسنجی فیلدها
+        if (!email || !password || !name) {
+            return NextResponse.json({ error: "ایمیل، پسورد یا نام خالیه!" }, { status: 400 });
         }
 
         const db = client.db("blues-nomad");
@@ -24,6 +25,7 @@ export async function POST(req: Request) {
         const result = await users.insertOne({
             email,
             password: hashedPassword,
+            name, // اضافه کردن فیلد name
             createdAt: new Date(),
         });
 

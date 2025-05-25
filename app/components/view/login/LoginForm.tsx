@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import {useState} from 'react';
+import {useRouter} from 'next/navigation';
+import Link from "next/link";
+import Cookies from "js-cookie"
 
 export default function LoginForm() {
     const [email, setEmail] = useState('');
@@ -18,16 +20,15 @@ export default function LoginForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({email, password}),
             });
 
             const data = await res.json();
 
             if (res.ok) {
-                // ذخیره توکن در localStorage
-                localStorage.setItem('token', data.token);
+                Cookies.set("token", data.token, {expires: 1});
+                // localStorage.setItem('token', data.token);
                 setResult('Login successful! Redirecting to dashboard...');
-                // انتقال به داشبورد
                 setTimeout(() => router.push('/'), 1000);
             } else {
                 setResult(`Error: ${data.error}`);
@@ -67,6 +68,12 @@ export default function LoginForm() {
                 >
                     Log In
                 </button>
+                <Link
+                    href={'/register'}
+                    className="bg-blue-600 text-white mx-2 px-4 py-[10px] rounded hover:bg-blue-700"
+                >
+                    Sign Up
+                </Link>
             </form>
             {result && (
                 <pre className="mt-4 p-2 text-black bg-gray-100 rounded text-sm overflow-x-auto">

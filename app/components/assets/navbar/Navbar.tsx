@@ -1,13 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, {useEffect, useState} from 'react';
+import Link from "next/link";
+import {usePathname, useRouter} from 'next/navigation';
 import Cookies from "js-cookie";
 
-export default function Dashboard() {
+function Navbar() {
+    const pathname = usePathname();
     const [user, setUser] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    const hiddenRoutes = ['/login', '/register'];
+
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -40,29 +44,15 @@ export default function Dashboard() {
 
         fetchUser();
     }, [router]);
-
-    if (error) {
-        return <div className="text-red-500 text-center mt-10">{error}</div>;
-    }
-
-    if (!user) {
-        return <div className="text-center mt-10">Loading...</div>;
+    if (hiddenRoutes.includes(pathname)) {
+        return null;
     }
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-4 border rounded shadow">
-            <h1 className="text-2xl font-bold mb-4">WellCome</h1>
-            <p><strong>Email:</strong> {user.email}</p>
-            {user.name && <p><strong>Name:</strong> {user.name}</p>}
-            <button
-                onClick={() => {
-                    Cookies.remove('token');
-                    router.push('/login');
-                }}
-                className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-            >
-                Log Out
-            </button>
+        <div className="max-w-full mx-auto p-4 border rounded shadow">
+            <Link href={'/'}>Home</Link>
         </div>
     );
 }
+
+export default Navbar;

@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         const token = jwt.sign(
             { userId: user._id, email: user.email },
             process.env.JWT_SECRET!,
-            { expiresIn: '1h' } // توکن برای ۱ ساعت معتبر است
+            { expiresIn: '24h' }
         );
 
         return NextResponse.json({ token, user: { email: user.email, name: user.name } });

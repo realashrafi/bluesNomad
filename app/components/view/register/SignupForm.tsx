@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import {useState} from 'react';
+import Link from "next/link";
 
 export default function SignupForm() {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [result, setResult] = useState<string | null>(null);
 
@@ -16,7 +18,7 @@ export default function SignupForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({email, password, name}),
             });
 
             const data = await res.json();
@@ -30,6 +32,16 @@ export default function SignupForm() {
         <div className="max-w-md mx-auto mt-10 p-4 border rounded shadow">
             <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block">Name</label>
+                    <input
+                        type="text"
+                        className="w-full text-black p-2 border rounded"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                </div>
                 <div>
                     <label className="block">Email</label>
                     <input
@@ -56,6 +68,12 @@ export default function SignupForm() {
                 >
                     Sign Up
                 </button>
+                <Link
+                    href={'/login'}
+                    className="bg-blue-600 text-white mx-2 px-4 py-[10px] rounded hover:bg-blue-700"
+                >
+                    Sign In
+                </Link>
             </form>
             {result && (
                 <pre className="mt-4 p-2 text-black bg-gray-100 rounded text-sm overflow-x-auto">
