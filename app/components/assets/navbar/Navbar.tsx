@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import Link from "next/link";
 import {usePathname, useRouter} from 'next/navigation';
 import Cookies from "js-cookie";
+import {Vortex} from "@/app/components/assets/ui/vortex";
 
 function Navbar() {
     const pathname = usePathname();
@@ -15,7 +16,7 @@ function Navbar() {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const token =  Cookies.get('token');
+            const token = Cookies.get('token');
             if (!token) {
                 setError('No token found. Please log in.');
                 router.push('/login');
@@ -49,9 +50,15 @@ function Navbar() {
     }
 
     return (
-        <div className="max-w-full mx-auto p-4 border rounded shadow">
+        <Vortex
+            backgroundColor="black"
+            rangeY={800}
+            particleCount={100}
+            baseHue={220}
+            className="max-w-full mx-auto p-4 bg-transparent rounded shadow "
+        >
             <Link href={'/'}>Home</Link>
-        </div>
+        </Vortex>
     );
 }
 

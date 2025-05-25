@@ -2,6 +2,7 @@
 
 import {useState} from 'react';
 import Link from "next/link";
+import {Input} from "@/app/components/assets/ui/Input";
 
 export default function SignupForm() {
     const [email, setEmail] = useState('');
@@ -29,12 +30,12 @@ export default function SignupForm() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-4 border rounded shadow">
+        <div className="max-w-md mx-auto mt-10 p-4  rounded shadow">
             <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block">Name</label>
-                    <input
+                    <Input
                         type="text"
                         className="w-full text-black p-2 border rounded"
                         value={name}
@@ -44,7 +45,7 @@ export default function SignupForm() {
                 </div>
                 <div>
                     <label className="block">Email</label>
-                    <input
+                    <Input
                         type="email"
                         className="w-full text-black p-2 border rounded"
                         value={email}
@@ -54,7 +55,7 @@ export default function SignupForm() {
                 </div>
                 <div>
                     <label className="block">Password</label>
-                    <input
+                    <Input
                         type="password"
                         className="w-full text-black p-2 border rounded"
                         value={password}
@@ -64,16 +65,20 @@ export default function SignupForm() {
                 </div>
                 <button
                     type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                    Sign Up
+                    className="bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                    Create Account
                 </button>
-                <Link
-                    href={'/login'}
-                    className="bg-blue-600 text-white mx-2 px-4 py-[10px] rounded hover:bg-blue-700"
-                >
-                    Sign In
-                </Link>
+                <button
+                    type="submit"
+                    className="mx-2 bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                    <Link
+                        href={'/login'}
+                    >
+                        Sign In
+                    </Link>
+                </button>
             </form>
             {result && (
                 <pre className="mt-4 p-2 text-black bg-gray-100 rounded text-sm overflow-x-auto">
