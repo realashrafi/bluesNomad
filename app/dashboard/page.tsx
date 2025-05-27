@@ -18,7 +18,7 @@ function Page() {
     ]
 
     return (
-        <div className="flex items-center justify-center mx-auto mt-10 p-4 rounded shadow">
+        <div className="flex items-center justify-center mx-auto mt-10 p-4 rounded ">
             <GlowingEffectView items={itemsPage}/>
         </div>
     );

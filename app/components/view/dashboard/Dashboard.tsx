@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
 import {GlowingEffectView} from "@/app/components/assets/ui/GlowingEffectView";
+import Loading from "@/app/components/assets/ui/Loading";
 
 export default function Dashboard() {
     const [user, setUser] = useState<any>(null);
@@ -47,7 +48,9 @@ export default function Dashboard() {
     }
 
     if (!user) {
-        return <div className="text-center mt-10">Loading...</div>;
+        return <div className="text-center">
+            <Loading />
+        </div>;
     }
     const itemsPage = [
         {
@@ -84,7 +87,7 @@ export default function Dashboard() {
         },
     ]
     return (
-        <div className="flex items-center justify-center mx-auto mt-10 p-4 rounded shadow">
+        <div className="flex items-center justify-center mx-auto mt-10 p-4 rounded ">
             <GlowingEffectView items={itemsPage}/>
         </div>
     );
