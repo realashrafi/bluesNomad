@@ -1,9 +1,7 @@
 import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 import Navbar from "@/app/components/assets/navbar/Navbar";
-import {Children} from "react";
 import ChildrenLayout from "@/app/components/assets/children/ChildrenLayout";
 import {BackgroundBeamsWithCollision} from "@/app/components/assets/ui/BackgroundBeamsWithCollision";
 
