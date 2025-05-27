@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/app/components/assets/navbar/Navbar";
 import ChildrenLayout from "@/app/components/assets/children/ChildrenLayout";
 import {BackgroundBeamsWithCollision} from "@/app/components/assets/ui/BackgroundBeamsWithCollision";
+import Providers from "@/app/components/assets/providers/providers";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -30,10 +31,12 @@ export default function RootLayout({
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-        <BackgroundBeamsWithCollision>
-            <Navbar/>
-            <ChildrenLayout children={children}/>
-        </BackgroundBeamsWithCollision>
+        <Providers>
+            <BackgroundBeamsWithCollision>
+                <Navbar/>
+                <ChildrenLayout children={children}/>
+            </BackgroundBeamsWithCollision>
+        </Providers>
         </body>
         </html>
     );
