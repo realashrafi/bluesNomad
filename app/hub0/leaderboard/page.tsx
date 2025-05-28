@@ -29,8 +29,8 @@ function Page() {
             }
             return response.json();
         },
-        enabled: isAuthenticated,
-        staleTime: 5 * 60 * 1000,
+        enabled: true,
+        staleTime: 2 * 60 * 1000,
     });
 
     if (isLoading) {
@@ -78,7 +78,7 @@ function Page() {
                         </button>
 
                         <div
-                            className="absolute flex flex-col items-center justify-center opacity-0 transition-opacity group-hover:relative group-hover:opacity-100 "
+                            className="absolute flex text-green-400 flex-col items-start justify-center opacity-0 transition-opacity group-hover:relative group-hover:opacity-100 "
                         >
                             <span className={'flex items-center justify-center gap-1'}>
                                 <span>Email :</span>
@@ -88,7 +88,7 @@ function Page() {
                                 <span>Level :</span>
                                 {item.level}
                             </span>
-                            <span className={'flex items-center justify-center gap-1'}>
+                            <span className={'flex  items-center justify-center gap-1'}>
                                 <span>Best Score :</span>
                                 {item.maxScore}
                             </span>
