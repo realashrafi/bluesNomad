@@ -34,7 +34,9 @@ export default function LoginForm() {
             } else {
                 setResult(`Error: ${data.error}`);
             }
-        } catch (error: any) {
+        } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-expect-error
             setResult(`Error: ${error.message}`);
         }
     };

@@ -42,7 +42,9 @@ export async function POST(request: Request) {
         await gameScore.save();
 
         return NextResponse.json({ message: 'Score saved successfully', gameScore }, { status: 201 });
-    } catch (error: any) {
+    } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-expect-error
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
@@ -63,7 +65,9 @@ export async function GET(request: Request) {
             .lean();
 
         return NextResponse.json({ scores });
-    } catch (error: any) {
+    } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-expect-error
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

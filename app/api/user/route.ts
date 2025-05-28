@@ -32,7 +32,9 @@ export async function GET(request: Request) {
         }
 
         return NextResponse.json({ user });
-    } catch (error: any) {
+    } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-expect-error
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

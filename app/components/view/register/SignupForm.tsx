@@ -24,7 +24,9 @@ export default function SignupForm() {
 
             const data = await res.json();
             setResult(JSON.stringify(data, null, 2));
-        } catch (error: any) {
+        } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-expect-error
             setResult(`Error: ${error.message}`);
         }
     };

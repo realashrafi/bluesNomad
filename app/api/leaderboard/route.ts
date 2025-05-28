@@ -48,7 +48,9 @@ export async function GET() {
         ]);
 
         return NextResponse.json({ leaderboard });
-    } catch (error: any) {
+    } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-expect-error
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

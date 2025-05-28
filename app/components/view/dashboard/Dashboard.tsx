@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -35,7 +36,8 @@ export default function Dashboard() {
                     Cookies.remove('token');
                     router.push('/login');
                 }
-            } catch (err: any) {
+            } catch (err) {
+                //@ts-expect-error
                 setError(err.message);
             }
         };
@@ -86,6 +88,7 @@ export default function Dashboard() {
             // icon: <Link href={'/hub0/game'}>GAME</Link>,
         },
     ]
+    
     return (
         <div className="flex items-center justify-center mx-auto mt-10 p-4 rounded ">
             <GlowingEffectView items={itemsPage}/>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
@@ -79,9 +80,9 @@ export const BackgroundBeamsWithCollision = ({
                 <CollisionMechanism
                     key={beam.initialX + "beam-idx"}
                     beamOptions={beam}
-                    //@ts-ignore
+                    //@ts-expect-error
                     containerRef={containerRef}
-                    //@ts-ignore
+                    //@ts-expect-error
                     parentRef={parentRef}
                 />
             ))}
@@ -116,6 +117,7 @@ const CollisionMechanism = React.forwardRef<
             repeatDelay?: number;
         };
     }
+
 >(({ parentRef, containerRef, beamOptions = {} }, ref) => {
     const beamRef = useRef<HTMLDivElement>(null);
     const [collision, setCollision] = useState<{

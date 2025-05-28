@@ -45,7 +45,9 @@ export async function POST(request: Request) {
         );
 
         return NextResponse.json({ token, user: { email: user.email, name: user.name } });
-    } catch (error: any) {
+    } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-expect-error
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

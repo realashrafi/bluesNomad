@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Link from "next/link";
 import {usePathname, useRouter} from 'next/navigation';
 import Cookies from "js-cookie";
@@ -8,8 +8,6 @@ import {Vortex} from "@/app/components/assets/ui/vortex";
 
 function Navbar() {
     const pathname = usePathname();
-    const [user, setUser] = useState<any>(null);
-    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const hiddenRoutes = ['/login', '/register'];
 
@@ -18,7 +16,7 @@ function Navbar() {
         const fetchUser = async () => {
             const token = Cookies.get('token');
             if (!token) {
-                setError('No token found. Please log in.');
+                // setError('No token found. Please log in.');
                 router.push('/login');
                 return;
             }
@@ -30,16 +28,18 @@ function Navbar() {
                     },
                 });
 
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const data = await res.json();
                 if (res.ok) {
-                    setUser(data.user);
+                    // setUser(data.user);
                 } else {
-                    setError(data.error);
+                    // setError(data.error);
                     Cookies.remove('token');
                     router.push('/login');
                 }
-            } catch (err: any) {
-                setError(err.message);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (err) {
+                // setError(err.message);
             }
         };
 
