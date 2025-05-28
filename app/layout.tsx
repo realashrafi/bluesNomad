@@ -34,7 +34,9 @@ export default function RootLayout({
         <Providers>
             <BackgroundBeamsWithCollision>
                 <Navbar/>
-                <ChildrenLayout children={children}/>
+                <ChildrenLayout>
+                    {children}
+                </ChildrenLayout>
             </BackgroundBeamsWithCollision>
         </Providers>
         </body>
