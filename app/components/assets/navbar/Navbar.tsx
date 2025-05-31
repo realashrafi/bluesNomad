@@ -9,7 +9,7 @@ import {Vortex} from "@/app/components/assets/ui/vortex";
 function Navbar() {
     const pathname = usePathname();
     const router = useRouter();
-    const hiddenRoutes = ['/login', '/register'];
+    const hiddenRoutes = ['/login', '/register','/hub0/game/zboom'];
 
 
     useEffect(() => {
