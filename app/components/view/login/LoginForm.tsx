@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Link from "next/link";
 import Cookies from "js-cookie"
@@ -8,7 +8,7 @@ import {Input} from "@/app/components/assets/ui/Input";
 import LoadingMini from "@/app/components/assets/ui/LoadingMini";
 
 export default function LoginForm() {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState<string | undefined>('');
     const [password, setPassword] = useState('');
     const [result, setResult] = useState<string | null>(null);
     const [loading, setLoading] = useState(false)
@@ -44,7 +44,12 @@ export default function LoginForm() {
             setResult(`Error: ${error.message}`);
         }
     };
-
+    useEffect(() => {
+        const email : string | undefined = Cookies.get('email');
+        if (email !== ''){
+            setEmail(email);
+        }
+    }, []);
     return (
         <div className="max-w-md mx-auto mt-10 p-4  rounded shadow">
             <h1 className="text-2xl font-bold mb-4">Log In</h1>
