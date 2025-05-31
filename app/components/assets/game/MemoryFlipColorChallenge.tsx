@@ -366,7 +366,7 @@ export default function MemoryFlipColorChallenge() {
                                 className="absolute w-[72px] h-[72px] z-10 bg-black rounded-full left-1/2 -translate-x-1/2 top-[5px] blur-[1px]"
                             ></div>
                             <label
-                                className="group cursor-pointer absolute w-[72px] h-[72px] bg-gradient-to-b frto-green-400 to-green-400 rounded-full left-1/2 -translate-x-1/2 top-[5px] shadow-[inset_0px_4px_2px_#60a5fa,inset_0px_-4px_0px_#1e3a8a,0px_0px_2px_rgba(0,0,0,10)] active:shadow-[inset_0px_4px_2px_rgba(96,165,250,0.5),inset_0px_-4px_2px_rgba(37,99,235,0.5),0px_0px_2px_rgba(0,0,0,10)] z-20 flex items-center justify-center"
+                                className="group cursor-pointer absolute w-[72px] h-[72px] bg-gradient-to-b from-green-600 to-green-400 rounded-full left-1/2 -translate-x-1/2 top-[5px] shadow-[inset_0px_4px_2px_#60a5fa,inset_0px_-4px_0px_#1e3a8a,0px_0px_2px_rgba(0,0,0,10)] active:shadow-[inset_0px_4px_2px_rgba(96,165,250,0.5),inset_0px_-4px_2px_rgba(37,99,235,0.5),0px_0px_2px_rgba(0,0,0,10)] z-20 flex items-center justify-center"
                             >
                                 <div
                                     className="w-8 group-active:w-[31px] fill-green-100 drop-shadow-[0px_2px_2px_rgba(0,0,0,0.5)]"
@@ -380,6 +380,7 @@ export default function MemoryFlipColorChallenge() {
                             </label>
                         </div>
                     </button>
+
 
                 ) : gameOver ? (
                     <button
