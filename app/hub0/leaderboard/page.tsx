@@ -18,7 +18,7 @@ function Page() {
         setIsAuthenticated(!!token);
     }, []);
 
-    const {data, isLoading, error} = useQuery({
+    const {data, isLoading, error,refetch} = useQuery({
         queryKey: ['leaderboard'],
         queryFn: async () => {
             const response = await fetch('/api/leaderboard', {
@@ -34,7 +34,9 @@ function Page() {
         enabled: true,
         staleTime: 2 * 60 * 1000,
     });
-
+    useEffect(() => {
+        refetch()
+    }, []);
     if (isLoading) {
         return (
             <Loading/>
