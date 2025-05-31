@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Timer, Eye, RotateCcw, Heart, Zap, Award } from 'lucide-react';
 import Cookies from 'js-cookie';
 import { useMutation } from '@tanstack/react-query';
+import LoadingMini from "@/app/components/assets/ui/LoadingMini";
 
 export default function MemoryFlipColorChallenge() {
     const [tiles, setTiles] = useState([]);
@@ -260,16 +261,7 @@ export default function MemoryFlipColorChallenge() {
                 <h1 className="text-xl md:text-2xl font-bold">بازی چالش حافظه رنگی</h1>
                 <p className="mt-1 text-base md:text-lg" dir="rtl">{message}</p>
                 {saveScoreMutation.isPending && (
-                    <div className="flex items-center justify-center gap-2 mt-2">
-                        <div className="w-4 h-4 rounded-full bg-green-400 animate-bounce"></div>
-                        <div
-                            className="w-4 h-4 rounded-full bg-green-400 animate-bounce [animation-delay:-.3s]"
-                        ></div>
-                        <div
-                            className="w-4 h-4 rounded-full bg-green-400 animate-bounce [animation-delay:-.5s]"
-                        ></div>
-                    </div>
-
+                 <LoadingMini />
                 )}
             </div>
 
