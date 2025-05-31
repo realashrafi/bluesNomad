@@ -250,7 +250,8 @@ export default function MemoryFlipColorChallenge() {
         setHints(3);
         setGameOver(false);
         setMessage('');
-        initGame();
+        setGameStarted(false);
+        setTiles([]);
     };
 
     return (
@@ -259,7 +260,16 @@ export default function MemoryFlipColorChallenge() {
                 <h1 className="text-xl md:text-2xl font-bold">بازی چالش حافظه رنگی</h1>
                 <p className="mt-1 text-base md:text-lg" dir="rtl">{message}</p>
                 {saveScoreMutation.isPending && (
-                    <p className="text-sm text-yellow-500">در حال ذخیره امتیاز...</p>
+                    <div className="flex items-center justify-center gap-2 mt-2">
+                        <div className="w-4 h-4 rounded-full bg-green-400 animate-bounce"></div>
+                        <div
+                            className="w-4 h-4 rounded-full bg-green-400 animate-bounce [animation-delay:-.3s]"
+                        ></div>
+                        <div
+                            className="w-4 h-4 rounded-full bg-green-400 animate-bounce [animation-delay:-.5s]"
+                        ></div>
+                    </div>
+
                 )}
             </div>
 
@@ -317,7 +327,7 @@ export default function MemoryFlipColorChallenge() {
                 </div>
             )}
 
-            {isAuthenticated && (
+            {isAuthenticated && gameStarted && (
                 <div
                     className="grid gap-2 w-full"
                     style={{
@@ -348,13 +358,29 @@ export default function MemoryFlipColorChallenge() {
                         برای بازی باید وارد شوید
                     </button>
                 ) : !gameStarted ? (
-                    <button
-                        onClick={initGame}
-                        className="bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
-                    >
-                        <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-                        شروع بازی
+                    <button className="cursor-pointer" onClick={initGame}>
+                        <div
+                            className="w-[83px] h-[83px] bg-green-50 rounded-full relative shadow-[inset_0px_0px_1px_1px_rgba(0,0,0,0.3),_2px_3px_5px_rgba(0,0,0,0.1)] flex items-center justify-center"
+                        >
+                            <div
+                                className="absolute w-[72px] h-[72px] z-10 bg-black rounded-full left-1/2 -translate-x-1/2 top-[5px] blur-[1px]"
+                            ></div>
+                            <label
+                                className="group cursor-pointer absolute w-[72px] h-[72px] bg-gradient-to-b frto-green-400 to-green-400 rounded-full left-1/2 -translate-x-1/2 top-[5px] shadow-[inset_0px_4px_2px_#60a5fa,inset_0px_-4px_0px_#1e3a8a,0px_0px_2px_rgba(0,0,0,10)] active:shadow-[inset_0px_4px_2px_rgba(96,165,250,0.5),inset_0px_-4px_2px_rgba(37,99,235,0.5),0px_0px_2px_rgba(0,0,0,10)] z-20 flex items-center justify-center"
+                            >
+                                <div
+                                    className="w-8 group-active:w-[31px] fill-green-100 drop-shadow-[0px_2px_2px_rgba(0,0,0,0.5)]"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24">
+                                        <path
+                                            d="M20.492,7.969,10.954.975A5,5,0,0,0,3,5.005V19a4.994,4.994,0,0,0,7.954,4.03l9.538-6.994a5,5,0,0,0,0-8.062Z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            </label>
+                        </div>
                     </button>
+
                 ) : gameOver ? (
                     <button
                         onClick={restartGame}
@@ -362,28 +388,18 @@ export default function MemoryFlipColorChallenge() {
                     >
                         <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                         <RotateCcw className="mr-1" size={20} />
-                        بازی دوباره
+                        شروع مجدد
                     </button>
                 ) : (
-                    <>
-                        <button
-                            onClick={useHint}
-                            disabled={memorizePhase || hints === 0 || gameOver}
-                            className="flex items-center bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
-                        >
-                            <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-                            <Eye className="mr-1" size={20} />
-                            استفاده از راهنمایی
-                        </button>
-                        <button
-                            onClick={restartGame}
-                            className="flex items-center bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
-                        >
-                            <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-                            <RotateCcw className="mr-1" size={20} />
-                            شروع مجدد
-                        </button>
-                    </>
+                    <button
+                        onClick={useHint}
+                        disabled={memorizePhase || hints === 0 || gameOver}
+                        className="flex items-center bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
+                    >
+                        <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                        <Eye className="mr-1" size={20} />
+                        استفاده از راهنمایی
+                    </button>
                 )}
             </div>
 
