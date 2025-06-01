@@ -6,7 +6,7 @@ function Page() {
         <div>
             <MemoryFlipColorChallenge
                 stage={'stage2'}
-                levels={[4,5,6]}
+                levels={[4,5]}
                 totalTime={95}
                 memorizeTime={5}
                 lives={5} // 5 جان

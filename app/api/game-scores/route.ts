@@ -26,7 +26,7 @@ const GameScoreSchema = new mongoose.Schema({
 });
 
 // حذف مدل قدیمی برای توسعه (در محیط تولید از مهاجرت استفاده کنید)
-// delete mongoose.models.GameScore;
+delete mongoose.models.GameScore;
 const GameScoreModel = mongoose.model('GameScore', GameScoreSchema);
 
 export async function POST(request: Request) {

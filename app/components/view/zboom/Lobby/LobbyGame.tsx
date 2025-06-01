@@ -8,7 +8,7 @@ import useFilteredStages from "@/app/components/assets/zboom/useFilteredStages";
 import {useRouter} from "next/navigation";
 import {useQuery} from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import Loading from "@/app/components/assets/ui/Loading";
+
 
 const GameMenu: React.FC = () => {
     const [focusedMarkerId, setFocusedMarkerId] = useState<string | undefined>(undefined);

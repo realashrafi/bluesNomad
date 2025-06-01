@@ -61,19 +61,13 @@ export async function GET(request: Request) {
 
         // 3. پیدا کردن آخرین استیجی که تمام مراحلش isSuccess: true هستند
         const allStages = await GameScoreModel.aggregate([
-            { $match: { userId } },
-            { $group: {
-                    _id: '$stage',
-                    allSuccess: { $min: '$isSuccess' }, // اگر همه true باشند، min هم true است
-                    maxTimestamp: { $max: '$timestamp' } // برای مرتب‌سازی بر اساس زمان
-                } },
-            { $match: { allSuccess: true } }, // فقط استیج‌هایی که همه isSuccess=true هستند
-            { $sort: { maxTimestamp: -1 } }, // جدیدترین استیج
-            { $limit: 1 },
-            { $project: { _id: 1 } }
+            { $match: { userId, isSuccess: true } }, // فقط اسنادی که isSuccess: true هستند
+            { $sort: { timestamp: -1 } }, // مرتب‌سازی بر اساس جدیدترین timestamp
+            { $limit: 1 }, // جدیدترین سند
+            { $project: { stage: 1, _id: 0 } } // فقط فیلد stage را برگردان
         ]);
 
-        const lastAllSuccessStage = allStages.length > 0 ? allStages[0]._id : null;
+        const lastAllSuccessStage = allStages.length > 0 ? allStages[0].stage : null;
 
         console.log('User stages data:', {
             latestStage,
