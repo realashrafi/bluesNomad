@@ -10,8 +10,8 @@ const GameMenu: React.FC = () => {
     const stages = [
         {
             id: "stage1",
-            lat: 35.7219,
-            lng: 51.3347,
+            lat:35.679565,
+            lng:51.418841,
             Serial: 1,
             pitch: 30,
             popupContent: (
@@ -32,8 +32,8 @@ const GameMenu: React.FC = () => {
         },
         {
             id: "stage2",
-            lat: 35.6886,
-            lng: 51.3500,
+            lat:35.689373,
+            lng:51.427585,
             Serial: 2,
             pitch: 30,
             popupContent: (
@@ -54,8 +54,8 @@ const GameMenu: React.FC = () => {
         },
         {
             id: "stage3",
-            lat: 35.8112,
-            lng: 51.4351,
+            lat: 35.740516,
+            lng: 51.446960,
             Serial: 3,
             pitch: 45,
             popupContent: (
@@ -76,8 +76,8 @@ const GameMenu: React.FC = () => {
         },
         {
             id: "stage4",
-            lat: 35.7355,
-            lng: 51.4211,
+            lat: 35.709244,
+            lng: 51.404911,
             Serial: 4,
             pitch: 60,
             popupContent: (
@@ -98,8 +98,8 @@ const GameMenu: React.FC = () => {
         },
         {
             id: "stage5",
-            lat: 35.7000,
-            lng: 51.4013,
+            lat: 35.758005,
+            lng: 51.434722,
             Serial: 5,
             pitch: 30,
             popupContent: (
@@ -120,8 +120,8 @@ const GameMenu: React.FC = () => {
         },
         {
             id: "stage6",
-            lat: 35.6944,
-            lng: 51.4215,
+            lat: 35.736690,
+            lng: 51.432627,
             Serial: 6,
             pitch: 45,
             popupContent: (
@@ -142,8 +142,8 @@ const GameMenu: React.FC = () => {
         },
         {
             id: "stage7",
-            lat: 35.7578,
-            lng: 51.4102,
+            lat: 35.757865,
+            lng: 51.409466,
             Serial: 7,
             pitch: 60,
             popupContent: (
@@ -164,8 +164,8 @@ const GameMenu: React.FC = () => {
         },
         {
             id: "stage8",
-            lat: 35.7061,
-            lng: 51.4349,
+            lat: 35.763657,
+            lng:  51.418059,
             Serial: 8,
             pitch: 45,
             popupContent: (
