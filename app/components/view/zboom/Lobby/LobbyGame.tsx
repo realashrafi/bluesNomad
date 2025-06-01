@@ -6,19 +6,46 @@ import BottomSheet from "@/app/components/view/zboom/Lobby/BottomSheet";
 import Timeline from "@/app/components/assets/zboom/Timeline";
 import useFilteredStages from "@/app/components/assets/zboom/useFilteredStages";
 import {useRouter} from "next/navigation";
+import {useQuery} from "@tanstack/react-query";
+import Cookies from "js-cookie";
+import Loading from "@/app/components/assets/ui/Loading";
 
 const GameMenu: React.FC = () => {
     const [focusedMarkerId, setFocusedMarkerId] = useState<string | undefined>(undefined);
     const [progressMarkerId, setProgressMarkerId] = useState<string | undefined>(undefined);
     const [excludedIds, setExcludedIds] = useState(['stage1', 'stage2']);
     const router = useRouter();
+    const {data, isLoading, error, refetch} = useQuery({
+        queryKey: ['user-stages'],
+        queryFn: async () => {
+            const response = await fetch('/api/user-stages', {
+                headers: {
+                    'Authorization': `Bearer ${Cookies.get('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('خطا در دریافت ');
+            }
+            return response.json();
+        },
+        enabled: true,
+        staleTime: 2 * 60 * 1000,
+    });
+
+    // console.log(data)
     useEffect(() => {
+        refetch()
         const lastStage = localStorage.getItem("lastStageFocus");
-        if (lastStage) {
+        if (data?.latestStage) {
+            setFocusedMarkerId(data?.latestStage);
+        } else if (lastStage) {
             setFocusedMarkerId(lastStage);
         }
-    }, []);
-    // تعریف ۸ مرحله با لوکیشن‌های تهران و زاویه‌های pitch
+        if (data?.lastAllSuccessStage) {
+            setProgressMarkerId(data?.lastAllSuccessStage);
+        }
+    }, [data]);
+
     const stages = [
         {
             id: "stage1",
@@ -26,16 +53,16 @@ const GameMenu: React.FC = () => {
             lng: 51.418841,
             Serial: 1,
             pitch: 30,
-            title:'',
-            date:'',
+            title: '',
+            date: '',
             description: <div className="">
                 <h3 className="font-bold">مرحله ۱: برج میلاد</h3>
                 <p className="text-sm">ماموریت در بلندترین برج ایران!</p>
                 <button
                     className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        setProgressMarkerId("stage1");
-                        console.log("Progress set to stage1");
+                        // setProgressMarkerId("stage1");
+                        // console.log("Progress set to stage1");
                         router.push("/hub0/game/zboom/levels/1");
                     }}
                 >
@@ -54,17 +81,17 @@ const GameMenu: React.FC = () => {
             lng: 51.427585,
             Serial: 2,
             pitch: 30,
-            title:'',
-            date:'',
+            title: '',
+            date: '',
             description: <div className="">
                 <h3 className="font-bold">مرحله ۲: میدان آزادی</h3>
                 <p className="text-sm">چالش در نماد تهران!</p>
                 <button
                     className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        setProgressMarkerId("stage2");
+                        // setProgressMarkerId("stage2");
                         router.push("/hub0/game/zboom/levels/2");
-                        console.log("Progress set to stage2");
+                        // console.log("Progress set to stage2");
                     }}
                 >
                     شروع
@@ -82,15 +109,15 @@ const GameMenu: React.FC = () => {
             lng: 51.446960,
             Serial: 3,
             pitch: 45,
-            title:'',
-            date:'',
+            title: '',
+            date: '',
             description: <div className="">
                 <h3 className="font-bold">مرحله ۳: میدان تجریش</h3>
                 <p className="text-sm">ماجراجویی در بازار سنتی!</p>
                 <button
                     className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        setProgressMarkerId("stage3");
+                        // setProgressMarkerId("stage3");
                         console.log("Progress set to stage3");
                     }}
                 >
@@ -109,15 +136,15 @@ const GameMenu: React.FC = () => {
             lng: 51.404911,
             Serial: 4,
             pitch: 60,
-            title:'',
-            date:'',
+            title: '',
+            date: '',
             description: <div className="">
                 <h3 className="font-bold">مرحله ۴: پارک لاله</h3>
                 <p className="text-sm">چالش در قلب طبیعت تهران!</p>
                 <button
                     className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        setProgressMarkerId("stage4");
+                        // setProgressMarkerId("stage4");
                         console.log("Progress set to stage4");
                     }}
                 >
@@ -136,15 +163,15 @@ const GameMenu: React.FC = () => {
             lng: 51.434722,
             Serial: 5,
             pitch: 30,
-            title:'',
-            date:'',
+            title: '',
+            date: '',
             description: <div className="">
                 <h3 className="font-bold">مرحله ۵: میدان انقلاب</h3>
                 <p className="text-sm">ماموریت در مرکز فرهنگی تهران!</p>
                 <button
                     className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        setProgressMarkerId("stage5");
+                        // setProgressMarkerId("stage5");
                         console.log("Progress set to stage5");
                     }}
                 >
@@ -163,15 +190,15 @@ const GameMenu: React.FC = () => {
             lng: 51.432627,
             Serial: 6,
             pitch: 45,
-            title:'',
-            date:'',
-            description:<div className="">
+            title: '',
+            date: '',
+            description: <div className="">
                 <h3 className="font-bold">مرحله ۶: تئاتر شهر</h3>
                 <p className="text-sm">چالش در قلب هنر تهران!</p>
                 <button
                     className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        setProgressMarkerId("stage6");
+                        // setProgressMarkerId("stage6");
                         console.log("Progress set to stage6");
                     }}
                 >
@@ -190,15 +217,15 @@ const GameMenu: React.FC = () => {
             lng: 51.409466,
             Serial: 7,
             pitch: 60,
-            title:'',
-            date:'',
-            description:<div className="">
+            title: '',
+            date: '',
+            description: <div className="">
                 <h3 className="font-bold">مرحله ۷: پارک ملت</h3>
                 <p className="text-sm">ماجراجویی در پارک سرسبز!</p>
                 <button
                     className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        setProgressMarkerId("stage7");
+                        // setProgressMarkerId("stage7");
                         console.log("Progress set to stage7");
                     }}
                 >
@@ -217,15 +244,15 @@ const GameMenu: React.FC = () => {
             lng: 51.418059,
             Serial: 8,
             pitch: 45,
-            title:'',
-            date:'',
-            description:<div className="">
+            title: '',
+            date: '',
+            description: <div className="">
                 <h3 className="font-bold">مرحله ۸: کاخ گلستان</h3>
                 <p className="text-sm">ماموریت در قلب تاریخ تهران!</p>
                 <button
                     className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        setProgressMarkerId("stage8");
+                        // setProgressMarkerId("stage8");
                         console.log("Progress set to stage8");
                     }}
                 >
@@ -239,7 +266,14 @@ const GameMenu: React.FC = () => {
             ),
         },
     ];
-    const filteredStages = useFilteredStages(stages, excludedIds);
+    const processStringArray = (stringArray?: string[], lastAllSuccessStage?: any): string[] => {
+        if (lastAllSuccessStage === null) return ['stage1'];
+        if (lastAllSuccessStage === 'stage1') return ['stage1', 'stage2'];
+        if (!stringArray) return [];
+        if (stringArray.length > 1) return [...stringArray, `stage${stringArray.length + 1}`];
+        return stringArray;
+    };
+    const filteredStages = useFilteredStages(stages, processStringArray(data?.uniqueStages, data?.lastAllSuccessStage));
     // هندل کردن انتخاب مرحله
     const handleStageSelect = (stageId: string) => {
         setFocusedMarkerId(stageId);
@@ -249,7 +283,6 @@ const GameMenu: React.FC = () => {
 
     const handleEventClick = (event: any) => {
         handleStageSelect(event.id)
-        setProgressMarkerId(event.id) // progress step
         // console.log(`ایونت ${event.id} کلیک شد:`, event);
     };
 
