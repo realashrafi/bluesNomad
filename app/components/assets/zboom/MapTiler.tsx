@@ -272,7 +272,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
                 center: [targetMarker.lng, targetMarker.lat],
                 zoom: zoom,
                 pitch: targetMarker.pitch ?? defaultPitch, // زاویه عمودی (3D)
-                duration: 10000,
+                duration: 5000,
             });
 
             const marker = markersLayerRef.current.find((m) => {

@@ -45,8 +45,8 @@ export default function LoginForm() {
         }
     };
     useEffect(() => {
-        const email : string | undefined = Cookies.get('email');
-        if (email !== ''){
+        const email : any = Cookies.get('email');
+        if (email !== undefined){
             setEmail(email);
         }
     }, []);
