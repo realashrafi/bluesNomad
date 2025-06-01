@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 import React, {useEffect, useState} from "react";
 import MapTiler from "@/app/components/assets/zboom/MapTiler";

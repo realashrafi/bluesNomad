@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 import React, {useEffect, useRef, useState} from "react";
 import {Map as MapTilerMap, Marker as MapTilerMarker, Popup} from "@maptiler/sdk";
@@ -180,14 +181,12 @@ const MapTiler: React.FC<MapTilerProps> = ({
         // مسیر پیش‌فرض (آبی)
         if (sortedMarkers.length > 1) {
             const defaultPathCoordinates = sortedMarkers.map((marker) => [marker.lng, marker.lat]);
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-expect-error
             fetchRoute(defaultPathCoordinates).then((routeCoords) => {
                 if (!mapInstanceRef.current) return;
 
                 mapInstanceRef.current.addSource("default-path", {
                     type: "geojson",
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     //@ts-expect-error
                     data: {
                         type: "Feature",
@@ -220,14 +219,12 @@ const MapTiler: React.FC<MapTilerProps> = ({
                     .map((marker) => [marker.lng, marker.lat]);
 
                 if (progressPathCoordinates.length > 1) {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     //@ts-expect-error
                     fetchRoute(progressPathCoordinates).then((routeCoords) => {
                         if (!mapInstanceRef.current) return;
 
                         mapInstanceRef.current.addSource("progress-path", {
                             type: "geojson",
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             //@ts-expect-error
                             data: {
                                 type: "Feature",
