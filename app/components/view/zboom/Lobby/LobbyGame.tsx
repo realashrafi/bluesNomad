@@ -324,6 +324,8 @@ const GameMenu: React.FC = () => {
 
     return (
         <div className="flex p-2 w-full overflow-hidden">
+            <img className={'fixed top-2 left-2 z-50 w-10 h-10'} alt={'ZBOOM'} src={'/images/zboomLogo.png'}/>
+
             {/* منوی مراحل */}
             <BottomSheet>
                 <Timeline events={filteredStages} onEventClick={handleEventClick} defaultSelectedId={focusedMarkerId}/>

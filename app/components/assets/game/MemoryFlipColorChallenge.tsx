@@ -9,29 +9,37 @@ import LoadingMini from "@/app/components/assets/ui/LoadingMini";
 interface Tile {
     id: number;
     color: string;
+    image?: string; // ویژگی جدید برای تصویر
     matched: boolean;
     flipped: boolean;
 }
 
 interface MemoryFlipColorChallengeProps {
-    levels?: number[]; // لیست سطوح (مثلاً [6, 7])
-    totalTime?: number; // زمان کل هر مرحله (ثانیه)
-    memorizeTime?: number; // زمان فاز به‌خاطرسپردن
-    lives?: number; // تعداد جان‌ها
-    hints?: number; // تعداد راهنمایی‌ها
-    colors?: string[]; // لیست رنگ‌ها
-    stage?: string; // شماره یا نام مرحله (به‌صورت string)
-    isSuccess?: boolean; // موفقیت در مرحله
-    isUsedHint?: boolean; // استفاده از راهنمایی
-    unUsedHints?: number; // تعداد راهنمایی‌های استفاده‌نشده
-    onGameOver?: (score: number, level: number, stage: string, isSuccess: boolean, isUsedHint: boolean, unUsedHints: number) => void; // کال‌بک پایان بازی
-    onLevelComplete?: (level: number, score: number, stage: string, isSuccess: boolean, isUsedHint: boolean, unUsedHints: number) => void; // کال‌بک پایان سطح
+    levels?: number[];
+    totalTime?: number;
+    memorizeTime?: number;
+    lives?: number;
+    hints?: number;
+    colors?: string[];
+    images?: string[]; // لیست تصاویر
+    stage?: string;
+    isSuccess?: boolean;
+    isUsedHint?: boolean;
+    unUsedHints?: number;
+    onGameOver?: (score: number, level: number, stage: string, isSuccess: boolean, isUsedHint: boolean, unUsedHints: number) => void;
+    onLevelComplete?: (level: number, score: number, stage: string, isSuccess: boolean, isUsedHint: boolean, unUsedHints: number) => void;
 }
 
 const defaultColors = [
     'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500',
     'bg-purple-500', 'bg-pink-500', 'bg-orange-500', 'bg-teal-500',
     'bg-indigo-500', 'bg-emerald-500', 'bg-rose-500', 'bg-cyan-500',
+];
+
+
+const defaultImages = [
+    '/images/icon1.png', '/images/icon2.jpg', '/images/icon3.png', '/images/icon4.png',
+    '/images/icon5.png', '/images/icon6.jpg', '/images/icon7.png', '/images/icon8.png','/images/icon9.png','/images/icon10.png','/images/icon11.png','/images/icon12.png','/images/icon13.png',
 ];
 
 export default function MemoryFlipColorChallenge({
@@ -41,9 +49,12 @@ export default function MemoryFlipColorChallenge({
                                                      lives = 3,
                                                      hints = 3,
                                                      colors = defaultColors,
+                                                     images = defaultImages, // اضافه کردن پراپ تصاویر
                                                      stage = '1',
+                                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                                      isSuccess = false,
                                                      isUsedHint = false,
+                                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                                      unUsedHints = 0,
                                                      onGameOver,
                                                      onLevelComplete,
@@ -116,12 +127,13 @@ export default function MemoryFlipColorChallenge({
     const initGame = (newLevel: number = levels[0]) => {
         const numTiles = 4 + newLevel * 2;
         const gameColors = colors.slice(0, numTiles / 2);
+        const gameImages = images.slice(0, numTiles / 2); // انتخاب تصاویر به تعداد نصف تایل‌ها
         const tilesArray: Tile[] = [];
 
         for (let i = 0; i < gameColors.length; i++) {
             tilesArray.push(
-                { id: i * 2, color: gameColors[i], matched: false, flipped: false },
-                { id: i * 2 + 1, color: gameColors[i], matched: false, flipped: false }
+                { id: i * 2, color: gameColors[i], image: gameImages[i], matched: false, flipped: false },
+                { id: i * 2 + 1, color: gameColors[i], image: gameImages[i], matched: false, flipped: false }
             );
         }
 
@@ -137,7 +149,7 @@ export default function MemoryFlipColorChallenge({
         setMemorizePhase(true);
         setCurrentMemorizeTime(memorizeTime);
         setStageTime(totalTime - (newLevel - 1) * 2);
-        setMessage('آماده‌باش! به رنگ‌ها نگاه کن');
+        setMessage('آماده‌باش! به رنگ‌ها و تصاویر نگاه کن');
         setGameOver(false);
         setLevel(newLevel);
         setHasUsedHint(false);
@@ -157,7 +169,6 @@ export default function MemoryFlipColorChallenge({
         }
     }, [memorizePhase, currentMemorizeTime]);
 
-// در useEffect مربوط به اتمام زمان یا جان‌ها
     useEffect(() => {
         if (!gameStarted || gameOver || memorizePhase) return;
 
@@ -170,7 +181,6 @@ export default function MemoryFlipColorChallenge({
             setCurrentLives((prev) => {
                 const newLives = Math.max(prev - 1, 0);
                 if (!saveScoreMutation.isPending) {
-                    // همیشه isSuccess=false چون بازیکن موفق به اتمام مرحله نشده
                     saveScoreMutation.mutate({ score, level, stage, isSuccess: false, isUsedHint: hasUsedHint, unUsedHints: currentHints });
                 }
 
@@ -193,13 +203,12 @@ export default function MemoryFlipColorChallenge({
         }
     }, [stageTime, gameStarted, gameOver, memorizePhase, score, level, bestScore, stage, hasUsedHint, currentHints, onGameOver]);
 
-// در useEffect مربوط به تکمیل سطح
     useEffect(() => {
         if (selectedTiles.length === 2) {
             setIsClickLocked(true);
             const [first, second] = selectedTiles;
 
-            if (tiles[first].color === tiles[second].color) {
+            if (tiles[first].color === tiles[second].color && tiles[first].image === tiles[second].image) {
                 const newTiles = [...tiles];
                 newTiles[first].matched = true;
                 newTiles[second].matched = true;
@@ -210,7 +219,6 @@ export default function MemoryFlipColorChallenge({
                 setMessage(`آفرین! یک جفت پیدا کردی!${bonus ? ` جایزه: ${bonus}` : ''}`);
 
                 if (newTiles.every((tile) => tile.matched)) {
-                    // فقط در صورتی که سطح فعلی آخرین سطح باشد، isSuccess=true
                     const isLevelSuccess = level === levels[levels.length - 1];
                     if (!saveScoreMutation.isPending) {
                         saveScoreMutation.mutate({ score: newScore, level, stage, isSuccess: isLevelSuccess, isUsedHint: hasUsedHint, unUsedHints: currentHints });
@@ -248,7 +256,6 @@ export default function MemoryFlipColorChallenge({
                             setGameOver(true);
                             setMessage(`بازی تمام شد! امتیاز نهایی: ${score}`);
                             if (!saveScoreMutation.isPending) {
-                                // همیشه isSuccess=false چون بازیکن موفق به اتمام مرحله نشده
                                 saveScoreMutation.mutate({ score, level, stage, isSuccess: false, isUsedHint: hasUsedHint, unUsedHints: currentHints });
                             }
                             if (score > bestScore) {
@@ -318,6 +325,7 @@ export default function MemoryFlipColorChallenge({
     return (
         <div className="flex mx-auto flex-col items-center justify-center rounded-lg p-4 w-full max-w-3xl min-h-screen">
             <div className="w-full text-center mb-4">
+                <img src="/images/zboomTitle.png" className={'w-40 mx-auto mb-10 bg-amber-500 p-2 rounded-lg'} alt="zboomTitle"/>
                 <h1 className="text-xl md:text-2xl font-bold">بازی چالش حافظه رنگی</h1>
                 <p className="mt-1 text-base md:text-lg" dir="rtl">{message}</p>
                 {saveScoreMutation.isPending && <LoadingMini />}
@@ -395,7 +403,15 @@ export default function MemoryFlipColorChallenge({
                             } ${tile.matched ? 'opacity-50 scale-95' : 'hover:scale-105'} touch-action-manipulation`}
                             disabled={memorizePhase || tile.matched || gameOver || isClickLocked}
                             aria-label={`کارت ${index + 1}`}
-                        />
+                        >
+                            {(tile.flipped || tile.matched || memorizePhase || showColors) && tile.image && (
+                                <img
+                                    src={tile.image}
+                                    alt={`تصویر کارت ${index + 1}`}
+                                    className="w-[80%] mx-auto bg-white h-[80%] object-cover rounded-lg"
+                                />
+                            )}
+                        </button>
                     ))}
                 </div>
             )}
@@ -444,7 +460,7 @@ export default function MemoryFlipColorChallenge({
             </div>
 
             <div className="mt-10 text-xs md:text-sm text-center" dir="rtl">
-                رنگ‌ها را به خاطر بسپارید و جفت‌ها را پیدا کنید! با هر مرحله، تعداد کارت‌ها افزایش می‌یابد.
+                رنگ‌ها و تصاویر را به خاطر بسپارید و جفت‌ها را پیدا کنید! با هر مرحله، تعداد کارت‌ها افزایش می‌یابد.
             </div>
         </div>
     );
