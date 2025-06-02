@@ -49,7 +49,7 @@ const Timeline: React.FC<any> = ({ events, onEventClick, defaultSelectedId }) =>
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        {event.id}
+                        {event.Serial}
                     </motion.button>
                 ))}
             </div>

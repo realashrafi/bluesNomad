@@ -24,14 +24,14 @@ function Page() {
         staleTime: 2 * 60 * 1000,
     });
     useEffect(() => {
-        const exceptRoutes =['stage1','stage2'];
+        const exceptRoutes = ['stage1','stage2','stage3','stage4','stage5','stage6','stage7','stage8'];
         if (data?.canPlayRoutes) { // بررسی وجود canPlayRoutes
             const isAllInCanPlayRoutes = exceptRoutes.every(route =>
                 data.canPlayRoutes.includes(route)
             );
             setCanPlay(isAllInCanPlayRoutes);
         } else {
-            setCanPlay(false); // اگر data یا canPlayRoutes وجود نداشته باشد، false بگذار
+            setCanPlay(false);
         }
     }, [data, setCanPlay]);
     console.log(canPlay)
@@ -44,12 +44,12 @@ function Page() {
     return (
         <div>
             <MemoryFlipColorChallenge
-                stage={'stage2'}
-                levels={[3, 4]}
-                totalTime={95}
-                memorizeTime={5}
-                lives={5} // 5 جان
-                hints={3} // 2 راهنمایی
+                stage={'stage8'}
+                levels={[10]}
+                totalTime={220}
+                memorizeTime={13}
+                lives={7} // 5 جان
+                hints={10} // 2 راهنمایی
                 // onGameOver={(score, level) => console.log(`Game Over! Score: ${score}, Level: ${level}`)}
                 // onLevelComplete={(level, score) => console.log(`Level ${level} completed with score: ${score}`)}
             />

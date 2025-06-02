@@ -32,7 +32,7 @@ const GameMenu: React.FC = () => {
         staleTime: 2 * 60 * 1000,
     });
 
-    // console.log(data)
+
     useEffect(() => {
         refetch()
         const lastStage = localStorage.getItem("lastStageFocus");
@@ -41,11 +41,12 @@ const GameMenu: React.FC = () => {
         } else if (lastStage) {
             setFocusedMarkerId(lastStage);
         }
+    }, [data]);
+    useEffect(() => {
         if (data?.lastAllSuccessStage) {
             setProgressMarkerId(data?.lastAllSuccessStage);
         }
     }, [data]);
-
     const stages = [
         {
             id: "stage1",
@@ -59,12 +60,17 @@ const GameMenu: React.FC = () => {
                 <h3 className="font-bold">مرحله ۱: برج میلاد</h3>
                 <p className="text-sm">ماموریت در بلندترین برج ایران!</p>
                 <button
-                    className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
                         // setProgressMarkerId("stage1");
                         // console.log("Progress set to stage1");
                         router.push("/hub0/game/zboom/levels/1");
                     }}
+                    disabled={
+                        data?.playedStages?.some(
+                            (stage:any) => stage.stage === "stage1" && stage.isSuccess === true
+                        ) || false
+                    }
                 >
                     شروع
                 </button>
@@ -87,12 +93,17 @@ const GameMenu: React.FC = () => {
                 <h3 className="font-bold">مرحله ۲: میدان آزادی</h3>
                 <p className="text-sm">چالش در نماد تهران!</p>
                 <button
-                    className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
                         // setProgressMarkerId("stage2");
                         router.push("/hub0/game/zboom/levels/2");
                         // console.log("Progress set to stage2");
                     }}
+                    disabled={
+                        data?.playedStages?.some(
+                            (stage:any) => stage.stage === "stage2" && stage.isSuccess === true
+                        ) || false
+                    }
                 >
                     شروع
                 </button>
@@ -115,11 +126,15 @@ const GameMenu: React.FC = () => {
                 <h3 className="font-bold">مرحله ۳: میدان تجریش</h3>
                 <p className="text-sm">ماجراجویی در بازار سنتی!</p>
                 <button
-                    className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        // setProgressMarkerId("stage3");
-                        console.log("Progress set to stage3");
+                        router.push("/hub0/game/zboom/levels/3");
                     }}
+                    disabled={
+                        data?.playedStages?.some(
+                            (stage:any) => stage.stage === "stage3" && stage.isSuccess === true
+                        ) || false
+                    }
                 >
                     شروع
                 </button>
@@ -142,11 +157,15 @@ const GameMenu: React.FC = () => {
                 <h3 className="font-bold">مرحله ۴: پارک لاله</h3>
                 <p className="text-sm">چالش در قلب طبیعت تهران!</p>
                 <button
-                    className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        // setProgressMarkerId("stage4");
-                        console.log("Progress set to stage4");
+                        router.push("/hub0/game/zboom/levels/4");
                     }}
+                    disabled={
+                        data?.playedStages?.some(
+                            (stage:any) => stage.stage === "stage4" && stage.isSuccess === true
+                        ) || false
+                    }
                 >
                     شروع
                 </button>
@@ -169,11 +188,15 @@ const GameMenu: React.FC = () => {
                 <h3 className="font-bold">مرحله ۵: میدان انقلاب</h3>
                 <p className="text-sm">ماموریت در مرکز فرهنگی تهران!</p>
                 <button
-                    className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        // setProgressMarkerId("stage5");
-                        console.log("Progress set to stage5");
+                        router.push("/hub0/game/zboom/levels/5");
                     }}
+                    disabled={
+                        data?.playedStages?.some(
+                            (stage:any) => stage.stage === "stage5" && stage.isSuccess === true
+                        ) || false
+                    }
                 >
                     شروع
                 </button>
@@ -196,11 +219,15 @@ const GameMenu: React.FC = () => {
                 <h3 className="font-bold">مرحله ۶: تئاتر شهر</h3>
                 <p className="text-sm">چالش در قلب هنر تهران!</p>
                 <button
-                    className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        // setProgressMarkerId("stage6");
-                        console.log("Progress set to stage6");
+                        router.push("/hub0/game/zboom/levels/6");
                     }}
+                    disabled={
+                        data?.playedStages?.some(
+                            (stage:any) => stage.stage === "stage6" && stage.isSuccess === true
+                        ) || false
+                    }
                 >
                     شروع
                 </button>
@@ -223,11 +250,15 @@ const GameMenu: React.FC = () => {
                 <h3 className="font-bold">مرحله ۷: پارک ملت</h3>
                 <p className="text-sm">ماجراجویی در پارک سرسبز!</p>
                 <button
-                    className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        // setProgressMarkerId("stage7");
-                        console.log("Progress set to stage7");
+                        router.push("/hub0/game/zboom/levels/7");
                     }}
+                    disabled={
+                        data?.playedStages?.some(
+                            (stage:any) => stage.stage === "stage7" && stage.isSuccess === true
+                        ) || false
+                    }
                 >
                     شروع
                 </button>
@@ -250,11 +281,15 @@ const GameMenu: React.FC = () => {
                 <h3 className="font-bold">مرحله ۸: کاخ گلستان</h3>
                 <p className="text-sm">ماموریت در قلب تاریخ تهران!</p>
                 <button
-                    className="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
-                        // setProgressMarkerId("stage8");
-                        console.log("Progress set to stage8");
+                        router.push("/hub0/game/zboom/levels/8");
                     }}
+                    disabled={
+                        data?.playedStages?.some(
+                            (stage:any) => stage.stage === "stage8" && stage.isSuccess === true
+                        ) || false
+                    }
                 >
                     شروع
                 </button>
@@ -268,6 +303,7 @@ const GameMenu: React.FC = () => {
     ];
     const processStringArray = (stringArray?: string[], lastAllSuccessStage?: any): string[] => {
         if (lastAllSuccessStage === null) return ['stage1'];
+        if (lastAllSuccessStage === 'stage8') return ['stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6', 'stage7', 'stage8'];
         if (lastAllSuccessStage === 'stage1') return ['stage1', 'stage2'];
         if (!stringArray) return [];
         if (stringArray.length > 1) return [...stringArray, `stage${stringArray.length + 1}`];

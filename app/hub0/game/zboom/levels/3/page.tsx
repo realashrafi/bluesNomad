@@ -24,7 +24,7 @@ function Page() {
         staleTime: 2 * 60 * 1000,
     });
     useEffect(() => {
-        const exceptRoutes =['stage1','stage2'];
+        const exceptRoutes =['stage1','stage2','stage3'];
         if (data?.canPlayRoutes) { // بررسی وجود canPlayRoutes
             const isAllInCanPlayRoutes = exceptRoutes.every(route =>
                 data.canPlayRoutes.includes(route)
@@ -44,12 +44,12 @@ function Page() {
     return (
         <div>
             <MemoryFlipColorChallenge
-                stage={'stage2'}
-                levels={[3, 4]}
-                totalTime={95}
-                memorizeTime={5}
+                stage={'stage3'}
+                levels={[5]}
+                totalTime={105}
+                memorizeTime={7}
                 lives={5} // 5 جان
-                hints={3} // 2 راهنمایی
+                hints={4} // 2 راهنمایی
                 // onGameOver={(score, level) => console.log(`Game Over! Score: ${score}, Level: ${level}`)}
                 // onLevelComplete={(level, score) => console.log(`Level ${level} completed with score: ${score}`)}
             />

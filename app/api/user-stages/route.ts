@@ -20,6 +20,41 @@ const GameScoreModel = mongoose.models.GameScore || mongoose.model('GameScore', 
     timestamp: { type: Date, default: Date.now },
 }));
 
+const processStringArray = (stringArray?: string[], lastAllSuccessStage?: any): string[] => {
+    if (lastAllSuccessStage === null) return ['stage1'];
+    if (lastAllSuccessStage === 'stage8') return ['stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6', 'stage7', 'stage8'];
+    if (lastAllSuccessStage === 'stage1') return ['stage1', 'stage2'];
+    if (!stringArray) return [];
+    if (stringArray.length > 1) return [...stringArray, `stage${stringArray.length + 1}`];
+    return stringArray;
+};
+
+const getCanPlayRoutes = (uniqueStages?: string[], lastAllSuccessStage?: any): string[] => {
+    // آرایه مراحل قابل بازی را با استفاده از تابع processStringArray بدست آورید
+    const playableStages = processStringArray(uniqueStages, lastAllSuccessStage);
+    return playableStages;
+};
+
+const getPlayedStages = async (userId: mongoose.Types.ObjectId, uniqueStages: string[]): Promise<{ stage: string, isSuccess: boolean }[]> => {
+    const playedStages: { stage: string, isSuccess: boolean }[] = [];
+
+    // برای هر استیج یکتا، بررسی کن آیا حداقل یک سند با isSuccess: true وجود دارد
+    for (const stage of uniqueStages) {
+        const successDoc = await GameScoreModel.findOne({
+            userId,
+            stage,
+            isSuccess: true
+        }).lean();
+
+        playedStages.push({
+            stage,
+            isSuccess: !!successDoc // اگر سند با isSuccess: true وجود داشت، true، وگرنه false
+        });
+    }
+
+    return playedStages;
+};
+
 export async function GET(request: Request) {
     try {
         await connectDB();
@@ -49,7 +84,7 @@ export async function GET(request: Request) {
         const userId = new mongoose.Types.ObjectId(decoded.userId);
 
         // 1. پیدا کردن آخرین استیج بر اساس timestamp
-        const latestStageDoc:any = await GameScoreModel.findOne({ userId })
+        const latestStageDoc: any = await GameScoreModel.findOne({ userId })
             .sort({ timestamp: -1 }) // جدیدترین سند
             .select('stage')
             .lean();
@@ -69,16 +104,26 @@ export async function GET(request: Request) {
 
         const lastAllSuccessStage = allStages.length > 0 ? allStages[0].stage : null;
 
+        // 4. تولید آرایه canPlayRoutes
+        const canPlayRoutes = getCanPlayRoutes(uniqueStages, lastAllSuccessStage);
+
+        // 5. تولید آرایه استیج‌های بازی‌شده
+        const playedStages = await getPlayedStages(userId, uniqueStages);
+
         console.log('User stages data:', {
             latestStage,
             uniqueStages,
-            lastAllSuccessStage
+            lastAllSuccessStage,
+            canPlayRoutes,
+            playedStages
         });
 
         return NextResponse.json({
             latestStage,
             uniqueStages,
-            lastAllSuccessStage
+            lastAllSuccessStage,
+            canPlayRoutes,
+            playedStages
         }, { status: 200 });
 
     } catch (error) {
