@@ -1,6 +1,6 @@
 /* eslint-disable */
 'use client';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import MapTiler from "@/app/components/assets/zboom/MapTiler";
 import BottomSheet from "@/app/components/view/zboom/Lobby/BottomSheet";
 import Timeline from "@/app/components/assets/zboom/Timeline";
@@ -8,6 +8,7 @@ import useFilteredStages from "@/app/components/assets/zboom/useFilteredStages";
 import {useRouter} from "next/navigation";
 import {useQuery} from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import Loading from "@/app/components/assets/ui/Loading";
 
 
 
@@ -15,7 +16,8 @@ const GameMenu: React.FC = () => {
     const [focusedMarkerId, setFocusedMarkerId] = useState<string | undefined>(undefined);
     const [progressMarkerId, setProgressMarkerId] = useState<string | undefined>(undefined);
     const router = useRouter();
-    const {data, isLoading, error, refetch} = useQuery({
+    const bottomSheetRef = useRef<any>(null);
+    const {data, isLoading, refetch} = useQuery({
         queryKey: ['user-stages'],
         queryFn: async () => {
             const response = await fetch('/api/user-stages', {
@@ -28,10 +30,13 @@ const GameMenu: React.FC = () => {
             }
             return response.json();
         },
-        enabled: true,
         staleTime: 2 * 60 * 1000,
     });
-
+    const changeHeight = () => {
+        if (bottomSheetRef.current) {
+            bottomSheetRef.current.setHeight(350);
+        }
+    };
 
     useEffect(() => {
         refetch()
@@ -42,18 +47,18 @@ const GameMenu: React.FC = () => {
             setFocusedMarkerId(lastStage);
         }
     }, [data]);
-    useEffect(() => {
-        if (data?.lastAllSuccessStage) {
-            setProgressMarkerId(data?.lastAllSuccessStage);
-        }
-    }, [data]);
+    // useEffect(() => {
+    //     if (data?.lastAllSuccessStage) {
+    //         setProgressMarkerId(data?.lastAllSuccessStage);
+    //     }
+    // }, [data]);
     const stages = [
         {
             id: "stage1",
             lat: 35.679565,
             lng: 51.418841,
             Serial: 1,
-            pitch: 30,
+            pitch: 60,
             title: '',
             date: '',
             description: <div className="">
@@ -90,7 +95,7 @@ const GameMenu: React.FC = () => {
             lat: 35.689373,
             lng: 51.427585,
             Serial: 2,
-            pitch: 30,
+            pitch: 60,
             title: '',
             date: '',
             description: <div className="">
@@ -125,7 +130,7 @@ const GameMenu: React.FC = () => {
             lat: 35.740516,
             lng: 51.446960,
             Serial: 3,
-            pitch: 45,
+            pitch: 60,
             title: '',
             date: '',
             description: <div className="">
@@ -189,7 +194,7 @@ const GameMenu: React.FC = () => {
             lat: 35.758005,
             lng: 51.434722,
             Serial: 5,
-            pitch: 30,
+            pitch: 60,
             title: '',
             date: '',
             description: <div className="">
@@ -221,7 +226,7 @@ const GameMenu: React.FC = () => {
             lat: 35.736690,
             lng: 51.432627,
             Serial: 6,
-            pitch: 45,
+            pitch: 60,
             title: '',
             date: '',
             description: <div className="">
@@ -284,7 +289,7 @@ const GameMenu: React.FC = () => {
             lat: 35.763657,
             lng: 51.418059,
             Serial: 8,
-            pitch: 45,
+            pitch: 60,
             title: '',
             date: '',
             description: <div className="">
@@ -332,22 +337,27 @@ const GameMenu: React.FC = () => {
 
     const handleEventClick = (event: any) => {
         handleStageSelect(event.id)
+        changeHeight()
         // console.log(`ایونت ${event.id} کلیک شد:`, event);
     };
 
+
     return (
         <div className="flex p-2 w-full overflow-hidden">
+            {isLoading && <div className={'absolute z-50 flex justify-center items-center inset-0 w-full h-full'}>
+                <Loading/>
+            </div>}
             <img className={'fixed top-2 left-2 z-50 w-10 h-10'} alt={'ZBOOM'} src={'/images/zboomLogo.png'}/>
 
             {/* منوی مراحل */}
-            <BottomSheet>
+            <BottomSheet ref={bottomSheetRef}>
                 <Timeline events={filteredStages} onEventClick={handleEventClick} defaultSelectedId={focusedMarkerId}/>
                 <button onClick={()=>{
-                    router.push("/hub0/game/")
-                }} className="bg-green-950 !mb-10 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    router.push("/")
+                }} className="bg-green-950  text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                     <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                     <div className="flex items-center rounded-lg px-3 py-1">
-                      برگشت به اتاق بازی
+                     بازگشت
                     </div>
                 </button>
                 {/*<div className="w-48  bg-gray-100">*/}
@@ -383,10 +393,10 @@ const GameMenu: React.FC = () => {
             <div className="fixed inset-0">
                 <MapTiler
                     center={[51.409915, 35.757545]}
-                    zoom={17}
+                    zoom={18}
                     markers={filteredStages}
                     focusMarkerId={focusedMarkerId}
-                    progressMarkerId={progressMarkerId}
+                    progressMarkerId={data?.lastAllSuccessStage}
                     onMarkerClick={handleStageSelect}
                     className="h-full w-full"
                     defaultPitch={45}

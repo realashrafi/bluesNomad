@@ -249,7 +249,7 @@ export default function MemoryFlipColorChallenge({
                         if (isLevelSuccess) {
                             setIsDoneStage(true)
                             setMessage(`تبریک! شما تمام مراحل را با موفقیت پشت سر گذاشتید! امتیاز نهایی: ${newScore}`);
-                            setTimeout(() => router.push('/hub0/game/zboom'), 1300);
+                            setTimeout(() => router.push('/hub0/game/zboom'), 2000);
                         } else {
                             setMessage(`مرحله تمام شد! امتیاز نهایی: ${score}`);
                         }

@@ -33,7 +33,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
                                                progressMarkerId,
                                                onMarkerClick,
                                                className,
-                                               defaultPitch = 0, // زاویه پیش‌فرض (بدون کج شدن)
+                                               defaultPitch = 45, // زاویه پیش‌فرض (بدون کج شدن)
                                            }) => {
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<MapTilerMap | null>(null);
@@ -164,7 +164,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
         };
     }, [markers, onMarkerClick, mapLoaded]);
 
-    // رسم مسیرها (پیش‌فرض و پیشرفت)
+// رسم مسیرها (پیش‌فرض و پیشرفت)
     useEffect(() => {
         const map = mapInstanceRef.current;
         if (!map || !mapLoaded) return;
@@ -185,28 +185,31 @@ const MapTiler: React.FC<MapTilerProps> = ({
             fetchRoute(defaultPathCoordinates).then((routeCoords) => {
                 if (!mapInstanceRef.current) return;
 
-                mapInstanceRef.current.addSource("default-path", {
-                    type: "geojson",
-                    //@ts-expect-error
-                    data: {
-                        type: "Feature",
-                        geometry: {
-                            type: "LineString",
-                            coordinates: routeCoords,
+                // بررسی وجود منبع قبل از افزودن
+                if (!mapInstanceRef.current.getSource("default-path")) {
+                    mapInstanceRef.current.addSource("default-path", {
+                        type: "geojson",
+                        //@ts-expect-error
+                        data: {
+                            type: "Feature",
+                            geometry: {
+                                type: "LineString",
+                                coordinates: routeCoords,
+                            },
                         },
-                    },
-                });
+                    });
 
-                mapInstanceRef.current.addLayer({
-                    id: "default-path",
-                    type: "line",
-                    source: "default-path",
-                    paint: {
-                        "line-color": "#001121", // آبی
-                        "line-width": 10,
-                        "line-opacity": 0.2,
-                    },
-                });
+                    mapInstanceRef.current.addLayer({
+                        id: "default-path",
+                        type: "line",
+                        source: "default-path",
+                        paint: {
+                            "line-color": "#001121", // آبی
+                            "line-width": 10,
+                            "line-opacity": 0.2,
+                        },
+                    });
+                }
             });
         }
 
@@ -223,28 +226,31 @@ const MapTiler: React.FC<MapTilerProps> = ({
                     fetchRoute(progressPathCoordinates).then((routeCoords) => {
                         if (!mapInstanceRef.current) return;
 
-                        mapInstanceRef.current.addSource("progress-path", {
-                            type: "geojson",
-                            //@ts-expect-error
-                            data: {
-                                type: "Feature",
-                                geometry: {
-                                    type: "LineString",
-                                    coordinates: routeCoords,
+                        // بررسی وجود منبع قبل از افزودن
+                        if (!mapInstanceRef.current.getSource("progress-path")) {
+                            mapInstanceRef.current.addSource("progress-path", {
+                                type: "geojson",
+                                //@ts-expect-error
+                                data: {
+                                    type: "Feature",
+                                    geometry: {
+                                        type: "LineString",
+                                        coordinates: routeCoords,
+                                    },
                                 },
-                            },
-                        });
+                            });
 
-                        mapInstanceRef.current.addLayer({
-                            id: "progress-path",
-                            type: "line",
-                            source: "progress-path",
-                            paint: {
-                                "line-color": "#7ad032", // سبز
-                                "line-width": 10,
-                                "line-opacity": 1,
-                            },
-                        });
+                            mapInstanceRef.current.addLayer({
+                                id: "progress-path",
+                                type: "line",
+                                source: "progress-path",
+                                paint: {
+                                    "line-color": "#7ad032", // سبز
+                                    "line-width": 10,
+                                    "line-opacity": 1,
+                                },
+                            });
+                        }
                     });
                 }
             }
@@ -269,7 +275,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
                 center: [targetMarker.lng, targetMarker.lat],
                 zoom: zoom,
                 pitch: targetMarker.pitch ?? defaultPitch, // زاویه عمودی (3D)
-                duration: 5000,
+                duration: 10000,
             });
 
             const marker = markersLayerRef.current.find((m) => {
