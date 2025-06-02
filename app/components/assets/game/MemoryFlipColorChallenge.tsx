@@ -5,6 +5,8 @@ import { Timer, Eye, RotateCcw, Heart, Zap, Award } from 'lucide-react';
 import Cookies from 'js-cookie';
 import { useMutation } from '@tanstack/react-query';
 import LoadingMini from "@/app/components/assets/ui/LoadingMini";
+import CelebrationEffect from "@/app/components/assets/zboom/CelebrationEffect";
+import {useRouter} from "next/navigation";
 
 interface Tile {
     id: number;
@@ -60,6 +62,7 @@ export default function MemoryFlipColorChallenge({
     const [tiles, setTiles] = useState<Tile[]>([]);
     const [selectedTiles, setSelectedTiles] = useState<number[]>([]);
     const [gameStarted, setGameStarted] = useState(false);
+    const [isDoneStage, setIsDoneStage] = useState(false)
     const [showColors, setShowColors] = useState(false);
     const [memorizePhase, setMemorizePhase] = useState(false);
     const [currentMemorizeTime, setCurrentMemorizeTime] = useState(memorizeTime);
@@ -74,7 +77,7 @@ export default function MemoryFlipColorChallenge({
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isClickLocked, setIsClickLocked] = useState(false);
     const [hasUsedHint, setHasUsedHint] = useState(isUsedHint);
-
+    const router = useRouter();
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const storedScore = localStorage.getItem('bestScore');
@@ -90,7 +93,11 @@ export default function MemoryFlipColorChallenge({
             setGameStarted(false);
         }
     }, []);
-
+    // useEffect(() => {
+    //     if (isDoneStage){
+    //         setTimeout(() => router.push('/'), 500);
+    //     }
+    // }, []);
     const saveScoreMutation = useMutation({
         mutationFn: async ({ score, level, stage, isSuccess, isUsedHint, unUsedHints }: {
             score: number;
@@ -238,7 +245,14 @@ export default function MemoryFlipColorChallenge({
                         }, 1500);
                     } else {
                         setGameOver(true);
-                        setMessage(`بازی تمام شد! امتیاز نهایی: ${score}`);
+                        // تغییر اینجا: پیام خاص برای اتمام موفقیت‌آمیز آخرین مرحله
+                        if (isLevelSuccess) {
+                            setIsDoneStage(true)
+                            setMessage(`تبریک! شما تمام مراحل را با موفقیت پشت سر گذاشتید! امتیاز نهایی: ${newScore}`);
+                            setTimeout(() => router.push('/hub0/game/zboom'), 1300);
+                        } else {
+                            setMessage(`مرحله تمام شد! امتیاز نهایی: ${score}`);
+                        }
                         // onGameOver?.(score, level, stage, isLevelSuccess, hasUsedHint, currentHints);
                     }
                 }
@@ -456,7 +470,7 @@ export default function MemoryFlipColorChallenge({
                     </button>
                 )}
             </div>
-
+            {isDoneStage && <CelebrationEffect />}
             <div className="mt-10 text-xs md:text-sm text-center" dir="rtl">
                 رنگ‌ها و تصاویر را به خاطر بسپارید و جفت‌ها را پیدا کنید! با هر مرحله، تعداد کارت‌ها افزایش می‌یابد.
             </div>

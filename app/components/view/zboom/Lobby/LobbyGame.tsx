@@ -8,13 +8,12 @@ import useFilteredStages from "@/app/components/assets/zboom/useFilteredStages";
 import {useRouter} from "next/navigation";
 import {useQuery} from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import {Award} from "lucide-react";
+
 
 
 const GameMenu: React.FC = () => {
     const [focusedMarkerId, setFocusedMarkerId] = useState<string | undefined>(undefined);
     const [progressMarkerId, setProgressMarkerId] = useState<string | undefined>(undefined);
-    const [excludedIds, setExcludedIds] = useState(['stage1', 'stage2']);
     const router = useRouter();
     const {data, isLoading, error, refetch} = useQuery({
         queryKey: ['user-stages'],
@@ -58,8 +57,8 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             description: <div className="">
-                <h3 className="font-bold">مرحله ۱: برج میلاد</h3>
-                <p className="text-sm">ماموریت در بلندترین برج ایران!</p>
+                <h3 className="font-bold">مرحله اول: فرمان شاهانه</h3>
+                <p className="text-sm">کاخ گلستان</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -77,8 +76,12 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="">
-
+                <div className="text-black text-sm">
+                    در یکی از شب‌های پرمهتاب در کاخ گلستان، ناصرالدین‌شاه قاجار، که از بی‌حوصلگی و روزمرگی به ستوه آمده بود، تصمیم گرفت یک "مسابقه بزرگ همگانی" برگزار کند.
+                    شاه با صدای بلند گفت:
+                    – امیرکبیر! اگر بخواهیم یک سابقه برگزار کنیم ، چگونه هدایا را به برندگان دهیم ؟
+                    امیر با همان نگاه تیز و صدای شمرده‌اش گفت:
+                    – قربان، باید آن را در زیبوم ثبت نام کنیم ، تا زیبوم هدایا را به دست برندگان برساند
                 </div>
             ),
         },
@@ -91,8 +94,8 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             description: <div className="">
-                <h3 className="font-bold">مرحله ۲: میدان آزادی</h3>
-                <p className="text-sm">چالش در نماد تهران!</p>
+                <h3 className="font-bold">مرحله دوم: سفر به عمارت </h3>
+                <p className="text-sm">عمارت مسعودیه</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -110,8 +113,10 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="">
-
+                <div className="text-black text-sm">
+                    شاه غلام مخصوصش، غلام‌رضا را صدا زد:
+                    – غلام‌رضا! تو مأموری، برو عمارت مسعودیه، هدیه مسابقه را ثبت کن؛ جایزه باید رسمی باشد!
+                    غلام‌رضا با چشم‌هایی گردشده از مسئولیت، رکاب زد و تا غروب به عمارت رسید.
                 </div>
             ),
         },
@@ -124,8 +129,8 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             description: <div className="">
-                <h3 className="font-bold">مرحله ۳: میدان تجریش</h3>
-                <p className="text-sm">ماجراجویی در بازار سنتی!</p>
+                <h3 className="font-bold">مرحله سوم: ثبت در اداره پست</h3>
+                <p className="text-sm">اداره پست قاجاری</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -141,8 +146,8 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="">
-
+                <div className="text-black text-sm">
+                    هدیه باید ثبت سفارش می‌شد. پس غلام راهی اداره پست شد، جایی که نامه‌ها با مُهر لاکی و قلم نی نوشته می‌شد.
                 </div>
             ),
         },
@@ -155,8 +160,8 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             description: <div className="">
-                <h3 className="font-bold">مرحله ۴: پارک لاله</h3>
-                <p className="text-sm">چالش در قلب طبیعت تهران!</p>
+                <h3 className="font-bold">مرحله چهارم: هماهنگی</h3>
+                <p className="text-sm">اداره حمل‌ونقل</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -172,8 +177,10 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="">
-
+                <div className="text-black text-sm">
+                    غلام‌رضا باید پیک مخصوص را رزرو می‌کرد تا هدیه در بازه زمانی مشخص برسد. در اداره حمل‌ونقل، چرخ‌دستی و قاطر اجاره می‌دادند.
+                    کارمند گفت:
+                    – می‌خواهی امروز بفرستی یا فردا؟
                 </div>
             ),
         },
@@ -186,8 +193,8 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             description: <div className="">
-                <h3 className="font-bold">مرحله ۵: میدان انقلاب</h3>
-                <p className="text-sm">ماموریت در مرکز فرهنگی تهران!</p>
+                <h3 className="font-bold">مرحله پنجم: مراجعه به خزانه سلطنتی</h3>
+                <p className="text-sm">خزانه سلطنتی</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -203,8 +210,9 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="">
-
+                <div className="text-black text-sm">
+                    هر خدمتی بهایی دارد! غلام به خزانه رفت تا بودجه این مأموریت را پرداخت کند.
+                    غلام با هزار زحمت رسید پرداخت را گرفت، مهر شد، پول پرداخت شد.
                 </div>
             ),
         },
@@ -217,8 +225,8 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             description: <div className="">
-                <h3 className="font-bold">مرحله ۶: تئاتر شهر</h3>
-                <p className="text-sm">چالش در قلب هنر تهران!</p>
+                <h3 className="font-bold">مرحله ششم: فری کثیف</h3>
+                <p className="text-sm">ساندویچ‌های قجری</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -234,8 +242,9 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="">
-
+                <div className="text-black text-sm">
+                    پیش از توزیع، باید هدایا از "پوری کثیف" دریافت می‌شد.
+                    غلام به دکان فری کثیف رفت، جایی در دل بازارچه، که ساندویچ‌هایش بوی تاریخ می‌داد.
                 </div>
             ),
         },
@@ -248,8 +257,8 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             description: <div className="">
-                <h3 className="font-bold">مرحله ۷: پارک ملت</h3>
-                <p className="text-sm">ماجراجویی در پارک سرسبز!</p>
+                <h3 className="font-bold">مرحله هفتم: توزیع در ونک</h3>
+                <p className="text-sm">هاب ونک</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -265,8 +274,8 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="">
-
+                <div className="text-black text-sm">
+                    با سبدهای پر از ساندویچ، هدیه و دستور توزیع، غلام‌رضا به میدان ونک رسید تا آن ها عدایا را به دست برندگان برساند.
                 </div>
             ),
         },
@@ -279,8 +288,8 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             description: <div className="">
-                <h3 className="font-bold">مرحله ۸: کاخ گلستان</h3>
-                <p className="text-sm">ماموریت در قلب تاریخ تهران!</p>
+                <h3 className="font-bold">مرحله پایانی: تحویل</h3>
+                <p className="text-sm"> برنده در تابان غربی</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -296,8 +305,11 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="">
-
+                <div className="text-black text-sm">
+                    و اما برنده… در منطقه‌ای دور، به نام «تابان غربی»، منتظر بود.
+                    غلام، پس از این مسیر طولانی، هدیه را با احترام به برنده تقدیم کرد.
+                    شاه گفت:
+                    – زنده‌باد غلام‌رضا! او اکنون سردار مأموریت‌های خاص قجری است!
                 </div>
             ),
         },
