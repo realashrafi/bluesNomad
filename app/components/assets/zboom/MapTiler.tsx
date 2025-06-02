@@ -1,9 +1,9 @@
 /* eslint-disable */
 'use client';
-import React, {useEffect, useRef, useState} from "react";
-import {Map as MapTilerMap, Marker as MapTilerMarker, Popup} from "@maptiler/sdk";
+import React, { useEffect, useRef, useState } from "react";
+import { Map as MapTilerMap, Marker as MapTilerMarker, Popup } from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
-import {createRoot} from "react-dom/client";
+import { createRoot } from "react-dom/client";
 
 interface Marker {
     id: string;
@@ -11,7 +11,8 @@ interface Marker {
     lng: number;
     Serial?: number;
     popupContent?: React.ReactNode;
-    pitch?: number; // زاویه عمودی (3D) برای فوکوس روی این مارکر (اختیاری)
+    pitch?: number;
+    icon?: React.ReactNode; // فیلد جدید برای آیکون سفارشی (Fragment یا کامپوننت)
 }
 
 interface MapTilerProps {
@@ -22,7 +23,7 @@ interface MapTilerProps {
     progressMarkerId?: string;
     onMarkerClick?: (markerId: string) => void;
     className?: string;
-    defaultPitch?: number; // زاویه عمودی پیش‌فرض برای فوکوس
+    defaultPitch?: number;
 }
 
 const MapTiler: React.FC<MapTilerProps> = ({
@@ -33,7 +34,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
                                                progressMarkerId,
                                                onMarkerClick,
                                                className,
-                                               defaultPitch = 45, // زاویه پیش‌فرض (بدون کج شدن)
+                                               defaultPitch = 45,
                                            }) => {
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<MapTilerMap | null>(null);
@@ -51,19 +52,15 @@ const MapTiler: React.FC<MapTilerProps> = ({
             center: center,
             zoom: zoom,
             attributionControl: false,
+            navigationControl: false,
+            geolocateControl: false,
         });
 
         mapInstanceRef.current = map;
 
-        // منتظر لود کامل نقشه
         map.on("load", () => {
             setMapLoaded(true);
         });
-
-        // مدیریت خطاها
-        // map.on("error", (e) => {
-        //     console.error("MapTiler error:", e);
-        // });
 
         return () => {
             map.remove();
@@ -108,12 +105,12 @@ const MapTiler: React.FC<MapTilerProps> = ({
                 return data.features[0].geometry.coordinates;
             } else {
                 console.warn("No valid route in response:", JSON.stringify(data, null, 2));
-                return coordinates; // فال‌بک به خط مستقیم
+                return coordinates;
             }
         } catch (error) {
             console.error("Error fetching route:", error);
             console.log("Falling back to straight line for coordinates:", coordinates);
-            return coordinates; // فال‌بک به خط مستقیم
+            return coordinates;
         }
     };
 
@@ -128,12 +125,19 @@ const MapTiler: React.FC<MapTilerProps> = ({
 
         markers.forEach((marker) => {
             const iconElement = document.createElement("div");
-            iconElement.innerHTML = `
-        <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#E74C3C"/>
-          <text x="12" y="15" font-size="10" fill="#fff" text-anchor="middle">${marker.Serial || marker.id}</text>
-        </svg>
-      `;
+
+            // اگر آیکون سفارشی ارائه شده باشد، آن را رندر کنید
+            if (marker.icon) {
+                createRoot(iconElement).render(marker.icon);
+            } else {
+                // آیکون پیش‌فرض (SVG قبلی)
+                iconElement.innerHTML = `
+                    <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#E74C3C"/>
+                        <text x="12" y="15" font-size="10" fill="#fff" text-anchor="middle">${marker.Serial || marker.id}</text>
+                    </svg>
+                `;
+            }
 
             const mapMarker = new MapTilerMarker({
                 element: iconElement,
@@ -153,7 +157,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
             if (marker.popupContent) {
                 const popupContainer = document.createElement("div");
                 createRoot(popupContainer).render(marker.popupContent);
-                const popup = new Popup({offset: 25}).setDOMContent(popupContainer);
+                const popup = new Popup({ offset: 25 }).setDOMContent(popupContainer);
                 mapMarker.setPopup(popup);
             }
         });
@@ -164,7 +168,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
         };
     }, [markers, onMarkerClick, mapLoaded]);
 
-// رسم مسیرها (پیش‌فرض و پیشرفت)
+    // رسم مسیرها (پیش‌فرض و پیشرفت)
     useEffect(() => {
         const map = mapInstanceRef.current;
         if (!map || !mapLoaded) return;
@@ -185,7 +189,6 @@ const MapTiler: React.FC<MapTilerProps> = ({
             fetchRoute(defaultPathCoordinates).then((routeCoords) => {
                 if (!mapInstanceRef.current) return;
 
-                // بررسی وجود منبع قبل از افزودن
                 if (!mapInstanceRef.current.getSource("default-path")) {
                     mapInstanceRef.current.addSource("default-path", {
                         type: "geojson",
@@ -204,7 +207,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
                         type: "line",
                         source: "default-path",
                         paint: {
-                            "line-color": "#001121", // آبی
+                            "line-color": "#001121",
                             "line-width": 10,
                             "line-opacity": 0.2,
                         },
@@ -226,7 +229,6 @@ const MapTiler: React.FC<MapTilerProps> = ({
                     fetchRoute(progressPathCoordinates).then((routeCoords) => {
                         if (!mapInstanceRef.current) return;
 
-                        // بررسی وجود منبع قبل از افزودن
                         if (!mapInstanceRef.current.getSource("progress-path")) {
                             mapInstanceRef.current.addSource("progress-path", {
                                 type: "geojson",
@@ -245,7 +247,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
                                 type: "line",
                                 source: "progress-path",
                                 paint: {
-                                    "line-color": "#7ad032", // سبز
+                                    "line-color": "#7ad032",
                                     "line-width": 10,
                                     "line-opacity": 1,
                                 },
@@ -274,8 +276,8 @@ const MapTiler: React.FC<MapTilerProps> = ({
             map.easeTo({
                 center: [targetMarker.lng, targetMarker.lat],
                 zoom: zoom,
-                pitch: targetMarker.pitch ?? defaultPitch, // زاویه عمودی (3D)
-                duration: 10000,
+                pitch: targetMarker.pitch ?? defaultPitch,
+                duration: 5000,
             });
 
             const marker = markersLayerRef.current.find((m) => {
@@ -291,7 +293,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
         }
     }, [focusMarkerId, markers, zoom, mapLoaded, defaultPitch]);
 
-    return <div ref={mapRef} className={className}/>;
+    return <div ref={mapRef} className={className} />;
 };
 
 export default MapTiler;

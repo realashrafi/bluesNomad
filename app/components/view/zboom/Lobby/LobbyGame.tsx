@@ -9,7 +9,7 @@ import {useRouter} from "next/navigation";
 import {useQuery} from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import Loading from "@/app/components/assets/ui/Loading";
-
+import SvgImage from "@/app/components/assets/zboom/SvgImage";
 
 
 const GameMenu: React.FC = () => {
@@ -61,6 +61,13 @@ const GameMenu: React.FC = () => {
             pitch: 60,
             title: '',
             date: '',
+            icon: <>
+                <SvgImage src="/svg/icon1.svg"
+                          alt="stage1"
+                          size={40}
+                          className="hover:scale-110 transition-transform"
+                />
+            </>,
             description: <div className="">
                 <h3 className="font-bold">مرحله اول: فرمان شاهانه</h3>
                 <p className="text-sm">کاخ گلستان</p>
@@ -73,7 +80,7 @@ const GameMenu: React.FC = () => {
                     }}
                     disabled={
                         data?.playedStages?.some(
-                            (stage:any) => stage.stage === "stage1" && stage.isSuccess === true
+                            (stage: any) => stage.stage === "stage1" && stage.isSuccess === true
                         ) || false
                     }
                 >
@@ -82,7 +89,8 @@ const GameMenu: React.FC = () => {
             </div>,
             popupContent: (
                 <div className="text-black text-sm">
-                    در یکی از شب‌های پرمهتاب در کاخ گلستان، ناصرالدین‌شاه قاجار، که از بی‌حوصلگی و روزمرگی به ستوه آمده بود، تصمیم گرفت یک "مسابقه بزرگ همگانی" برگزار کند.
+                    در یکی از شب‌های پرمهتاب در کاخ گلستان، ناصرالدین‌شاه قاجار، که از بی‌حوصلگی و روزمرگی به ستوه آمده
+                    بود، تصمیم گرفت یک "مسابقه بزرگ همگانی" برگزار کند.
                     شاه با صدای بلند گفت:
                     – امیرکبیر! اگر بخواهیم یک سابقه برگزار کنیم ، چگونه هدایا را به برندگان دهیم ؟
                     امیر با همان نگاه تیز و صدای شمرده‌اش گفت:
@@ -98,6 +106,13 @@ const GameMenu: React.FC = () => {
             pitch: 60,
             title: '',
             date: '',
+            icon: <>
+                <SvgImage src="/svg/icon2.svg"
+                          alt="stage2"
+                          size={40}
+                          className="hover:scale-110 transition-transform"
+                />
+            </>,
             description: <div className="">
                 <h3 className="font-bold">مرحله دوم: سفر به عمارت </h3>
                 <p className="text-sm">عمارت مسعودیه</p>
@@ -110,7 +125,7 @@ const GameMenu: React.FC = () => {
                     }}
                     disabled={
                         data?.playedStages?.some(
-                            (stage:any) => stage.stage === "stage2" && stage.isSuccess === true
+                            (stage: any) => stage.stage === "stage2" && stage.isSuccess === true
                         ) || false
                     }
                 >
@@ -133,6 +148,13 @@ const GameMenu: React.FC = () => {
             pitch: 60,
             title: '',
             date: '',
+            icon: <>
+                <SvgImage src="/svg/icon3.svg"
+                          alt="stage3"
+                          size={40}
+                          className="hover:scale-110 transition-transform"
+                />
+            </>,
             description: <div className="">
                 <h3 className="font-bold">مرحله سوم: ثبت در اداره پست</h3>
                 <p className="text-sm">اداره پست قاجاری</p>
@@ -143,7 +165,7 @@ const GameMenu: React.FC = () => {
                     }}
                     disabled={
                         data?.playedStages?.some(
-                            (stage:any) => stage.stage === "stage3" && stage.isSuccess === true
+                            (stage: any) => stage.stage === "stage3" && stage.isSuccess === true
                         ) || false
                     }
                 >
@@ -152,7 +174,8 @@ const GameMenu: React.FC = () => {
             </div>,
             popupContent: (
                 <div className="text-black text-sm">
-                    هدیه باید ثبت سفارش می‌شد. پس غلام راهی اداره پست شد، جایی که نامه‌ها با مُهر لاکی و قلم نی نوشته می‌شد.
+                    هدیه باید ثبت سفارش می‌شد. پس غلام راهی اداره پست شد، جایی که نامه‌ها با مُهر لاکی و قلم نی نوشته
+                    می‌شد.
                 </div>
             ),
         },
@@ -164,6 +187,13 @@ const GameMenu: React.FC = () => {
             pitch: 60,
             title: '',
             date: '',
+            icon: <>
+                <SvgImage src="/svg/icon4.svg"
+                          alt="stage4"
+                          size={40}
+                          className="hover:scale-110 transition-transform"
+                />
+            </>,
             description: <div className="">
                 <h3 className="font-bold">مرحله چهارم: هماهنگی</h3>
                 <p className="text-sm">اداره حمل‌ونقل</p>
@@ -174,7 +204,7 @@ const GameMenu: React.FC = () => {
                     }}
                     disabled={
                         data?.playedStages?.some(
-                            (stage:any) => stage.stage === "stage4" && stage.isSuccess === true
+                            (stage: any) => stage.stage === "stage4" && stage.isSuccess === true
                         ) || false
                     }
                 >
@@ -183,7 +213,8 @@ const GameMenu: React.FC = () => {
             </div>,
             popupContent: (
                 <div className="text-black text-sm">
-                    غلام‌رضا باید پیک مخصوص را رزرو می‌کرد تا هدیه در بازه زمانی مشخص برسد. در اداره حمل‌ونقل، چرخ‌دستی و قاطر اجاره می‌دادند.
+                    غلام‌رضا باید پیک مخصوص را رزرو می‌کرد تا هدیه در بازه زمانی مشخص برسد. در اداره حمل‌ونقل، چرخ‌دستی
+                    و قاطر اجاره می‌دادند.
                     کارمند گفت:
                     – می‌خواهی امروز بفرستی یا فردا؟
                 </div>
@@ -197,6 +228,13 @@ const GameMenu: React.FC = () => {
             pitch: 60,
             title: '',
             date: '',
+            icon: <>
+                <SvgImage src="/svg/icon5.svg"
+                          alt="stage5"
+                          size={40}
+                          className="hover:scale-110 transition-transform"
+                />
+            </>,
             description: <div className="">
                 <h3 className="font-bold">مرحله پنجم: مراجعه به خزانه سلطنتی</h3>
                 <p className="text-sm">خزانه سلطنتی</p>
@@ -207,7 +245,7 @@ const GameMenu: React.FC = () => {
                     }}
                     disabled={
                         data?.playedStages?.some(
-                            (stage:any) => stage.stage === "stage5" && stage.isSuccess === true
+                            (stage: any) => stage.stage === "stage5" && stage.isSuccess === true
                         ) || false
                     }
                 >
@@ -229,6 +267,13 @@ const GameMenu: React.FC = () => {
             pitch: 60,
             title: '',
             date: '',
+            icon: <>
+                <SvgImage src="/svg/icon6.svg"
+                          alt="stage6"
+                          size={40}
+                          className="hover:scale-110 transition-transform"
+                />
+            </>,
             description: <div className="">
                 <h3 className="font-bold">مرحله ششم: فری کثیف</h3>
                 <p className="text-sm">ساندویچ‌های قجری</p>
@@ -239,7 +284,7 @@ const GameMenu: React.FC = () => {
                     }}
                     disabled={
                         data?.playedStages?.some(
-                            (stage:any) => stage.stage === "stage6" && stage.isSuccess === true
+                            (stage: any) => stage.stage === "stage6" && stage.isSuccess === true
                         ) || false
                     }
                 >
@@ -261,6 +306,13 @@ const GameMenu: React.FC = () => {
             pitch: 60,
             title: '',
             date: '',
+            icon: <>
+                <SvgImage src="/svg/icon7.svg"
+                          alt="stage7"
+                          size={40}
+                          className="hover:scale-110 transition-transform"
+                />
+            </>,
             description: <div className="">
                 <h3 className="font-bold">مرحله هفتم: توزیع در ونک</h3>
                 <p className="text-sm">هاب ونک</p>
@@ -271,7 +323,7 @@ const GameMenu: React.FC = () => {
                     }}
                     disabled={
                         data?.playedStages?.some(
-                            (stage:any) => stage.stage === "stage7" && stage.isSuccess === true
+                            (stage: any) => stage.stage === "stage7" && stage.isSuccess === true
                         ) || false
                     }
                 >
@@ -280,7 +332,8 @@ const GameMenu: React.FC = () => {
             </div>,
             popupContent: (
                 <div className="text-black text-sm">
-                    با سبدهای پر از ساندویچ، هدیه و دستور توزیع، غلام‌رضا به میدان ونک رسید تا آن ها عدایا را به دست برندگان برساند.
+                    با سبدهای پر از ساندویچ، هدیه و دستور توزیع، غلام‌رضا به میدان ونک رسید تا آن ها عدایا را به دست
+                    برندگان برساند.
                 </div>
             ),
         },
@@ -292,6 +345,13 @@ const GameMenu: React.FC = () => {
             pitch: 60,
             title: '',
             date: '',
+            icon: <>
+                <SvgImage src="/svg/icon8.svg"
+                          alt="stage8"
+                          size={40}
+                          className="hover:scale-110 transition-transform"
+                />
+            </>,
             description: <div className="">
                 <h3 className="font-bold">مرحله پایانی: تحویل</h3>
                 <p className="text-sm"> برنده در تابان غربی</p>
@@ -302,7 +362,7 @@ const GameMenu: React.FC = () => {
                     }}
                     disabled={
                         data?.playedStages?.some(
-                            (stage:any) => stage.stage === "stage8" && stage.isSuccess === true
+                            (stage: any) => stage.stage === "stage8" && stage.isSuccess === true
                         ) || false
                     }
                 >
@@ -319,6 +379,9 @@ const GameMenu: React.FC = () => {
             ),
         },
     ];
+    console.log('////////////////////////////////', data?.playedStages?.some(
+        (stage: any) => stage.stage === "stage8" && stage.isSuccess === true
+    ))
     const processStringArray = (stringArray?: string[], lastAllSuccessStage?: any): string[] => {
         if (lastAllSuccessStage === null) return ['stage1'];
         if (lastAllSuccessStage === 'stage8') return ['stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6', 'stage7', 'stage8'];
@@ -348,16 +411,25 @@ const GameMenu: React.FC = () => {
                 <Loading/>
             </div>}
             <img className={'fixed top-2 left-2 z-50 w-10 h-10'} alt={'ZBOOM'} src={'/images/zboomLogo.png'}/>
+            {data?.playedStages?.some(
+                (stage:any) => stage.stage === "stage8" && stage.isSuccess === true
+            ) && <SvgImage src="/svg/rewardIcon.svg"
+                       alt="stage8"
+                       size={40}
+                       className={'fixed hover:scale-110 animate-bounce transition-transform top-16 left-2 z-50 w-10 h-10'}
+            />}
 
             {/* منوی مراحل */}
             <BottomSheet ref={bottomSheetRef}>
                 <Timeline events={filteredStages} onEventClick={handleEventClick} defaultSelectedId={focusedMarkerId}/>
-                <button onClick={()=>{
+                <button onClick={() => {
                     router.push("/")
-                }} className="bg-green-950  text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
-                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                }}
+                        className="bg-green-950  text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span
+                        className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                     <div className="flex items-center rounded-lg px-3 py-1">
-                     بازگشت
+                        بازگشت
                     </div>
                 </button>
                 {/*<div className="w-48  bg-gray-100">*/}
