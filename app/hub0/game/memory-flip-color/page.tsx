@@ -11,8 +11,8 @@ function Page() {
             lives={5} // 5 جان
             hints={2} // 2 راهنمایی
             colors={['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500']} // رنگ‌های سفارشی
-            onGameOver={(score, level) => console.log(`Game Over! Score: ${score}, Level: ${level}`)}
-            onLevelComplete={(level, score) => console.log(`Level ${level} completed with score: ${score}`)}
+            // onGameOver={(score, level) => console.log(`Game Over! Score: ${score}, Level: ${level}`)}
+            // onLevelComplete={(level, score) => console.log(`Level ${level} completed with score: ${score}`)}
         />
         </div>
     );

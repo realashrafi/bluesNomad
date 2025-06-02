@@ -8,6 +8,7 @@ import useFilteredStages from "@/app/components/assets/zboom/useFilteredStages";
 import {useRouter} from "next/navigation";
 import {useQuery} from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import {Award} from "lucide-react";
 
 
 const GameMenu: React.FC = () => {
@@ -329,6 +330,14 @@ const GameMenu: React.FC = () => {
             {/* منوی مراحل */}
             <BottomSheet>
                 <Timeline events={filteredStages} onEventClick={handleEventClick} defaultSelectedId={focusedMarkerId}/>
+                <button onClick={()=>{
+                    router.push("/hub0/game/")
+                }} className="bg-green-950 !mb-10 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    <span className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                    <div className="flex items-center rounded-lg px-3 py-1">
+                      برگشت به اتاق بازی
+                    </div>
+                </button>
                 {/*<div className="w-48  bg-gray-100">*/}
                 {/*    <h3 className="text-lg font-bold mb-4">مراحل بازی</h3>*/}
                 {/*    <ul className="space-y-2">*/}

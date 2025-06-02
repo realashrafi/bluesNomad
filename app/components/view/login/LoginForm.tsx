@@ -40,7 +40,6 @@ export default function LoginForm() {
             }
         } catch (error) {
             setLoading(false)
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-expect-error
             setResult(`Error: ${error.message}`);
         }

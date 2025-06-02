@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable */
 'use client';
 import { useState, useEffect } from 'react';
 import { Timer, Eye, RotateCcw, Heart, Zap, Award } from 'lucide-react';
@@ -21,13 +21,13 @@ interface MemoryFlipColorChallengeProps {
     lives?: number;
     hints?: number;
     colors?: string[];
-    images?: string[]; // لیست تصاویر
+    images?: string[];
     stage?: string;
     isSuccess?: boolean;
     isUsedHint?: boolean;
     unUsedHints?: number;
-    onGameOver?: (score: number, level: number, stage: string, isSuccess: boolean, isUsedHint: boolean, unUsedHints: number) => void;
-    onLevelComplete?: (level: number, score: number, stage: string, isSuccess: boolean, isUsedHint: boolean, unUsedHints: number) => void;
+    // onGameOver?: (score: number, level: number, stage: string, isSuccess: boolean, isUsedHint: boolean, unUsedHints: number) => void;
+    // onLevelComplete?: (level: number, score: number, stage: string, isSuccess: boolean, isUsedHint: boolean, unUsedHints: number) => void;
 }
 
 const defaultColors = [
@@ -51,13 +51,11 @@ export default function MemoryFlipColorChallenge({
                                                      colors = defaultColors,
                                                      images = defaultImages, // اضافه کردن پراپ تصاویر
                                                      stage = '1',
-                                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                                      isSuccess = false,
                                                      isUsedHint = false,
-                                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                                      unUsedHints = 0,
-                                                     onGameOver,
-                                                     onLevelComplete,
+                                                     // onGameOver,
+                                                     // onLevelComplete,
                                                  }: MemoryFlipColorChallengeProps) {
     const [tiles, setTiles] = useState<Tile[]>([]);
     const [selectedTiles, setSelectedTiles] = useState<number[]>([]);
@@ -191,7 +189,7 @@ export default function MemoryFlipColorChallenge({
                         setBestScore(score);
                         localStorage.setItem('bestScore', score.toString());
                     }
-                    onGameOver?.(score, level, stage, false, hasUsedHint, currentHints);
+                    // onGameOver?.(score, level, stage, false, hasUsedHint, currentHints);
                 } else {
                     setMessage('زمان تمام شد! یک قلب از دست رفت.');
                     setTimeout(() => {
@@ -201,7 +199,7 @@ export default function MemoryFlipColorChallenge({
                 return newLives;
             });
         }
-    }, [stageTime, gameStarted, gameOver, memorizePhase, score, level, bestScore, stage, hasUsedHint, currentHints, onGameOver]);
+    }, [stageTime, gameStarted, gameOver, memorizePhase, score, level, bestScore, stage, hasUsedHint, currentHints]);
 
     useEffect(() => {
         if (selectedTiles.length === 2) {
@@ -234,14 +232,14 @@ export default function MemoryFlipColorChallenge({
                         setLevel(nextLevel);
                         setCurrentHints((prev) => prev + 1);
                         setMessage('مرحله تمام شد! آماده‌ی مرحله‌ی بعدی باش!');
-                        onLevelComplete?.(level, newScore, stage, isLevelSuccess, hasUsedHint, currentHints);
+                        // onLevelComplete?.(level, newScore, stage, isLevelSuccess, hasUsedHint, currentHints);
                         setTimeout(() => {
                             initGame(nextLevel);
                         }, 1500);
                     } else {
                         setGameOver(true);
                         setMessage(`بازی تمام شد! امتیاز نهایی: ${score}`);
-                        onGameOver?.(score, level, stage, isLevelSuccess, hasUsedHint, currentHints);
+                        // onGameOver?.(score, level, stage, isLevelSuccess, hasUsedHint, currentHints);
                     }
                 }
             } else {
@@ -262,7 +260,7 @@ export default function MemoryFlipColorChallenge({
                                 setBestScore(score);
                                 localStorage.setItem('bestScore', score.toString());
                             }
-                            onGameOver?.(score, level, stage, false, hasUsedHint, currentHints);
+                            // onGameOver?.(score, level, stage, false, hasUsedHint, currentHints);
                         } else {
                             setMessage('مطابقت نداشت، یک قلب از دست رفت!');
                         }
@@ -276,7 +274,7 @@ export default function MemoryFlipColorChallenge({
         } else {
             setIsClickLocked(false);
         }
-    }, [selectedTiles, score, level, bestScore, tiles, stage, hasUsedHint, currentHints, onGameOver, onLevelComplete, levels]);
+    }, [selectedTiles, score, level, bestScore, tiles, stage, hasUsedHint, currentHints, levels]);
 
     const handleTileClick = (index: number) => {
         if (

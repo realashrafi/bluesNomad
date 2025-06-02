@@ -14,9 +14,9 @@ interface BottomSheetProps {
 const BottomSheet: React.FC<BottomSheetProps> = ({
                                                      children,
                                                      minHeight = 100,
-                                                     midHeight = 290,
-                                                     maxHeight = 350,
-                                                     snapPoints = [100, 290, 350],
+                                                     midHeight = 300,
+                                                     maxHeight = 400,
+                                                     snapPoints = [100, 300, 400],
                                                  }) => {
 
     const [currentHeight, setCurrentHeight] = useState<number>(minHeight);
