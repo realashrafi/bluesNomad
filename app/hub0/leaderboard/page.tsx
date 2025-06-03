@@ -1,24 +1,22 @@
 /* eslint-disable */
 'use client'
-import React, {useEffect, useState} from 'react';
-import {GlowingEffectView} from "@/app/components/assets/ui/GlowingEffectView";
-import {useQuery} from "@tanstack/react-query";
+import React, { useEffect, useState } from 'react';
+import { GlowingEffectView } from "@/app/components/assets/ui/GlowingEffectView";
+import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import {ImEye} from "react-icons/im";
+import { ImEye } from "react-icons/im";
 import Loading from "@/app/components/assets/ui/Loading";
 import { TbMoodEmptyFilled } from "react-icons/tb";
 
 function Page() {
-
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-
 
     useEffect(() => {
         const token = Cookies.get('token');
         setIsAuthenticated(!!token);
     }, []);
 
-    const {data, isLoading, error,refetch} = useQuery({
+    const { data, isLoading, error, refetch } = useQuery({
         queryKey: ['leaderboard'],
         queryFn: async () => {
             const response = await fetch('/api/leaderboard', {
@@ -34,13 +32,13 @@ function Page() {
         enabled: true,
         staleTime: 2 * 60 * 1000,
     });
+
     useEffect(() => {
-        refetch()
+        refetch();
     }, []);
+
     if (isLoading) {
-        return (
-            <Loading/>
-        );
+        return <Loading />;
     }
 
     if (error) {
@@ -52,65 +50,85 @@ function Page() {
             </div>
         );
     }
+
     const leaderboard = data?.leaderboard || [];
     if (leaderboard.length === 0) {
         return (
             <div className="flex flex-col gap-2 items-center justify-center min-h-screen p-4">
-                <p className="text-base md:text-lg animate-ping duration-1000" >نداریم</p>
-                <TbMoodEmptyFilled className={'text-[100px] animate-spin duration-1000'}/>
+                <p className="text-base md:text-lg animate-ping duration-1000">نداریم</p>
+                <TbMoodEmptyFilled className={'text-[100px] animate-spin duration-1000'} />
             </div>
         );
     }
 
     //@ts-expect-error
     const convertor = (props) => {
-
         const leaderboard = props || [];
         //@ts-expect-error
-        return leaderboard.map((item, index: number) => ({
-            id: item._id,
+        return leaderboard.map((item, index) => ({
+            id: index, // _id دیگر در API نیست، از index استفاده می‌کنیم
             title: item.name,
             description: (
-                <div
-                    className="group relative block w-full mx-auto  "
-                >
-                    <div
-                        className="relative flex h-full w-60 transform items-end  transition-transform group-hover:scale-105"
-                    >
+                <div className="group relative block w-full mx-auto">
+                    <div className="relative flex h-full w-60 transform items-end transition-transform group-hover:scale-105">
                         <button
-                            className="w-full flex items-center justify-center group-hover:hidden bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                            className="w-full flex items-center justify-center group-hover:hidden bg-green-950 text-green-400 border border-green-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
+                        >
                             <span
-                                className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-                            <ImEye className={'text-xl'}/>
+                                className="bg-green-400 shadow-green-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"
+                            ></span>
+                            <ImEye className={'text-xl'} />
                         </button>
 
-                        <div
-                            className="absolute flex text-green-400 flex-col items-start justify-center opacity-0 transition-opacity group-hover:relative group-hover:opacity-100 "
-                        >
+                        <div className="absolute flex text-green-400 flex-col items-start justify-center opacity-0 transition-opacity group-hover:relative group-hover:opacity-100">
                             <span className={'flex items-center justify-center gap-1'}>
-                                <span>Email :</span>
+                                <span>ایمیل:</span>
                                 {item.email}
                             </span>
                             <span className={'flex items-center justify-center gap-1'}>
-                                <span>Level :</span>
-                                {item.level}
+                                <span>امتیاز کل:</span>
+                                {item.totalScore}
                             </span>
-                            <span className={'flex  items-center justify-center gap-1'}>
-                                <span>Best Score :</span>
-                                {item.maxScore}
+                            <span className={'flex items-center justify-center gap-1'}>
+                                <span>بالاترین سطح:</span>
+                                {item.maxLevel}
+                            </span>
+                            <span className={'flex items-center justify-center gap-1'}>
+                                <span>بالاترین استیج:</span>
+                                {item.highestStage}
+                            </span>
+                            <span className={'flex items-center justify-center gap-1'}>
+                                <span>تعداد موفقیت‌ها:</span>
+                                {item.totalSuccesses}
+                            </span>
+                            <span className={'flex items-center justify-center gap-1'}>
+                                <span>راهنماهای استفاده‌شده:</span>
+                                {item.totalHintsUsed}
+                            </span>
+                            <span className={'flex items-center justify-center gap-1'}>
+                                <span>راهنماهای استفاده‌نشده:</span>
+                                {item.totalUnUsedHints}
+                            </span>
+                            <span className={'flex items-center justify-center gap-1'}>
+                                <span>آخرین بازی:</span>
+                                {new Date(item.lastPlayed).toLocaleString('fa-IR', { dateStyle: 'short', timeStyle: 'short' })}
+                            </span>
+                            <span className={'flex items-center justify-center gap-1'}>
+                                <span>استیج‌های بازی‌شده:</span>
+                                {item.stagesPlayed}
                             </span>
                         </div>
                     </div>
                 </div>
-
             ),
             icon: <div className={'w-5 h-5 flex items-center justify-center'}>{index + 1}</div>,
         }));
     };
-    const itemsPage = convertor(leaderboard)
+
+    const itemsPage = convertor(leaderboard);
     return (
-        <div className="flex items-center justify-center mx-auto mt-10 p-4 rounded ">
-            <GlowingEffectView items={itemsPage}/>
+        <div className="flex items-center justify-center mx-auto mt-10 p-4 rounded">
+            <GlowingEffectView items={itemsPage} />
         </div>
     );
 }
