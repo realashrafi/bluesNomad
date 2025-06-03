@@ -73,7 +73,7 @@ const CelebrationEffect: React.FC = () => {
     }, []);
 
     return (
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-50">
             {particles.map((particle, index) => (
                 <Particle
                     key={index}

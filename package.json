@@ -24,6 +24,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
+    "react-qr-barcode-scanner": "^2.1.6",
     "simplex-noise": "^4.0.3",
     "tailwind-merge": "^3.3.0",
     "three": "^0.176.0",

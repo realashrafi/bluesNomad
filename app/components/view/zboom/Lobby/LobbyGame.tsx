@@ -10,6 +10,8 @@ import {useQuery} from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import Loading from "@/app/components/assets/ui/Loading";
 import SvgImage from "@/app/components/assets/zboom/SvgImage";
+import CelebrationEffect from "@/app/components/assets/zboom/CelebrationEffect";
+import Link from "next/link";
 
 
 const GameMenu: React.FC = () => {
@@ -379,9 +381,9 @@ const GameMenu: React.FC = () => {
             ),
         },
     ];
-    console.log('////////////////////////////////', data?.playedStages?.some(
-        (stage: any) => stage.stage === "stage8" && stage.isSuccess === true
-    ))
+    // console.log('////////////////////////////////', data?.playedStages?.some(
+    //     (stage: any) => stage.stage === "stage8" && stage.isSuccess === true
+    // ))
     const processStringArray = (stringArray?: string[], lastAllSuccessStage?: any): string[] => {
         if (lastAllSuccessStage === null) return ['stage1'];
         if (lastAllSuccessStage === 'stage8') return ['stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6', 'stage7', 'stage8'];
@@ -412,13 +414,15 @@ const GameMenu: React.FC = () => {
             </div>}
             <img className={'fixed top-2 left-2 z-50 w-10 h-10'} alt={'ZBOOM'} src={'/images/zboomLogo.png'}/>
             {data?.playedStages?.some(
-                (stage:any) => stage.stage === "stage8" && stage.isSuccess === true
-            ) && <SvgImage src="/svg/rewardIcon.svg"
-                       alt="stage8"
-                       size={40}
-                       className={'fixed hover:scale-110 animate-bounce transition-transform top-16 left-2 z-50 w-10 h-10'}
-            />}
-
+                (stage: any) => stage.stage === "stage8" && stage.isSuccess === true
+            ) && <Link href={'/hub0/game/zboom/rank'}><SvgImage src="/svg/rewardIcon.svg"
+                                           alt="stage8"
+                                           size={40}
+                                           className={'fixed hover:scale-110 animate-bounce transition-transform top-16 left-2 z-50 w-10 h-10'}
+            /></Link>}
+            {data?.playedStages?.some(
+                (stage: any) => stage.stage === "stage8" && stage.isSuccess === true
+            ) && <CelebrationEffect/>}
             {/* منوی مراحل */}
             <BottomSheet ref={bottomSheetRef}>
                 <Timeline events={filteredStages} onEventClick={handleEventClick} defaultSelectedId={focusedMarkerId}/>
