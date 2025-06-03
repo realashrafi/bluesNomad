@@ -64,15 +64,15 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             icon: <>
-                <SvgImage src="/svg/icon1.svg"
+                <SvgImage src="/svg/icon1.png"
                           alt="stage1"
-                          size={40}
+                          size={30}
                           className="hover:scale-110 transition-transform"
                 />
             </>,
             description: <div className="">
-                <h3 className="font-bold">مرحله اول: فرمان شاهانه</h3>
-                <p className="text-sm">کاخ گلستان</p>
+                <h3 className="font-bold">مرحله اول</h3>
+                <p className="text-sm text-right"> ثبت نام</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -90,13 +90,11 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="text-black text-sm">
-                    در یکی از شب‌های پرمهتاب در کاخ گلستان، ناصرالدین‌شاه قاجار، که از بی‌حوصلگی و روزمرگی به ستوه آمده
-                    بود، تصمیم گرفت یک "مسابقه بزرگ همگانی" برگزار کند.
-                    شاه با صدای بلند گفت:
-                    – امیرکبیر! اگر بخواهیم یک سابقه برگزار کنیم ، چگونه هدایا را به برندگان دهیم ؟
-                    امیر با همان نگاه تیز و صدای شمرده‌اش گفت:
-                    – قربان، باید آن را در زیبوم ثبت نام کنیم ، تا زیبوم هدایا را به دست برندگان برساند
+                <div dir={'rtl'} style={{ fontFamily: "'MyCustomFont', sans-serif" }} className="text-black text-[15px] leading-6 text-right">
+                    در تاریخ یک هزار و سیصد و بیست، دریک شبی
+                    مهتابی امیرکبیربه ناصرالدین شاه پیشنهاد داد یک "مسابقه بزرگ همگانی"برگزار کند.
+
+                    شاه دستور داد تا درزیبوم ثبت نام کنند که با اطمینان و سریع جوایز را به برندگان اهدا کنند
                 </div>
             ),
         },
@@ -109,15 +107,15 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             icon: <>
-                <SvgImage src="/svg/icon2.svg"
+                <SvgImage src="/svg/icon2.png"
                           alt="stage2"
-                          size={40}
+                          size={30}
                           className="hover:scale-110 transition-transform"
                 />
             </>,
             description: <div className="">
-                <h3 className="font-bold">مرحله دوم: سفر به عمارت </h3>
-                <p className="text-sm">عمارت مسعودیه</p>
+                <h3 className="font-bold">مرحله دوم</h3>
+                <p className="text-sm text-right">ثبت مرسوله</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -135,10 +133,14 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="text-black text-sm">
-                    شاه غلام مخصوصش، غلام‌رضا را صدا زد:
-                    – غلام‌رضا! تو مأموری، برو عمارت مسعودیه، هدیه مسابقه را ثبت کن؛ جایزه باید رسمی باشد!
-                    غلام‌رضا با چشم‌هایی گردشده از مسئولیت، رکاب زد و تا غروب به عمارت رسید.
+                <div dir={'rtl'} style={{ fontFamily: "'MyCustomFont', sans-serif" }} className="text-black text-[15px] leading-6 text-right">
+                    شاه غلام مخصوصش، غلام‌رضا
+                    را صدا زد:
+                    <br/>
+                    غلام تو مأموری، برو عمارت
+                    مسعودیه، هدیه مسابقه را ثبت کن؛ جایزه باید رسمی باشد!
+                    غلام‌رضا سریع رکاب زد
+                    و تا غروب به عمارت رسید
                 </div>
             ),
         },
@@ -151,15 +153,15 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             icon: <>
-                <SvgImage src="/svg/icon3.svg"
+                <SvgImage src="/svg/icon3.png"
                           alt="stage3"
-                          size={40}
+                          size={30}
                           className="hover:scale-110 transition-transform"
                 />
             </>,
             description: <div className="">
-                <h3 className="font-bold">مرحله سوم: ثبت در اداره پست</h3>
-                <p className="text-sm">اداره پست قاجاری</p>
+                <h3 className="font-bold">مرحله سوم</h3>
+                <p className="text-sm text-right">ثبت سفارش</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -175,9 +177,9 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="text-black text-sm">
-                    هدیه باید ثبت سفارش می‌شد. پس غلام راهی اداره پست شد، جایی که نامه‌ها با مُهر لاکی و قلم نی نوشته
-                    می‌شد.
+                <div dir={'rtl'} style={{ fontFamily: "'MyCustomFont', sans-serif" }} className="text-black text-[15px] leading-6 text-right">
+                    غلام برای ثبت سفارش
+                    جوایز راهی اداره پست شد
                 </div>
             ),
         },
@@ -190,15 +192,15 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             icon: <>
-                <SvgImage src="/svg/icon4.svg"
+                <SvgImage src="/svg/icon4.png"
                           alt="stage4"
-                          size={40}
+                          size={30}
                           className="hover:scale-110 transition-transform"
                 />
             </>,
             description: <div className="">
-                <h3 className="font-bold">مرحله چهارم: هماهنگی</h3>
-                <p className="text-sm">اداره حمل‌ونقل</p>
+                <h3 className="font-bold">مرحله چهارم</h3>
+                <p className="text-sm text-right">بازه جمع آوری</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -214,11 +216,14 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="text-black text-sm">
-                    غلام‌رضا باید پیک مخصوص را رزرو می‌کرد تا هدیه در بازه زمانی مشخص برسد. در اداره حمل‌ونقل، چرخ‌دستی
-                    و قاطر اجاره می‌دادند.
+                <div dir={'rtl'} style={{ fontFamily: "'MyCustomFont', sans-serif" }} className="text-black text-[15px] leading-6 text-right">
+                    غلام برای به موقع
+                    رسیدن جوایز به دست برندگان به اداره حمل و نقل رفت تا زمان دریافت جوایز را مشخصکند .
+                    <br/>
                     کارمند گفت:
-                    – می‌خواهی امروز بفرستی یا فردا؟
+                    – می‌خواهی امروز بفرستی
+                    یا فردا؟ (same day , next day )
+
                 </div>
             ),
         },
@@ -231,15 +236,15 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             icon: <>
-                <SvgImage src="/svg/icon5.svg"
+                <SvgImage src="/svg/icon5.png"
                           alt="stage5"
-                          size={40}
+                          size={30}
                           className="hover:scale-110 transition-transform"
                 />
             </>,
             description: <div className="">
-                <h3 className="font-bold">مرحله پنجم: مراجعه به خزانه سلطنتی</h3>
-                <p className="text-sm">خزانه سلطنتی</p>
+                <h3 className="font-bold">مرحله پنجم</h3>
+                <p className="text-sm text-right">پرداخت</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -255,9 +260,11 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="text-black text-sm">
-                    هر خدمتی بهایی دارد! غلام به خزانه رفت تا بودجه این مأموریت را پرداخت کند.
-                    غلام با هزار زحمت رسید پرداخت را گرفت، مهر شد، پول پرداخت شد.
+                <div dir={'rtl'} style={{ fontFamily: "'MyCustomFont', sans-serif" }} className="text-black text-[15px] leading-6 text-right">
+                    هر خدمتی بهایی دارد!
+                    غلام به خزانه رفت تا بودجه این مأموریت را پرداخت کند.
+                    غلام با هزار زحمت رسید
+                    پرداخت را گرفت، مهر شد، پول پرداخت شد.
                 </div>
             ),
         },
@@ -270,15 +277,15 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             icon: <>
-                <SvgImage src="/svg/icon6.svg"
+                <SvgImage src="/svg/icon6.png"
                           alt="stage6"
-                          size={40}
+                          size={30}
                           className="hover:scale-110 transition-transform"
                 />
             </>,
             description: <div className="">
-                <h3 className="font-bold">مرحله ششم: فری کثیف</h3>
-                <p className="text-sm">ساندویچ‌های قجری</p>
+                <h3 className="font-bold">مرحله ششم</h3>
+                <p className="text-sm text-right">جمع آوری</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -294,9 +301,12 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="text-black text-sm">
-                    پیش از توزیع، باید هدایا از "پوری کثیف" دریافت می‌شد.
-                    غلام به دکان فری کثیف رفت، جایی در دل بازارچه، که ساندویچ‌هایش بوی تاریخ می‌داد.
+                <div dir={'rtl'} style={{ fontFamily: "'MyCustomFont', sans-serif" }} className="text-black text-[15px] leading-6 text-right">
+                    به دستور شاه برای
+                    قدردانی از برندگان جشنی برگزار کنند و از مهمان‎‌هابا ساندویچ ویژه "پوری کثیف" پذیرایی کنند.
+
+                    غلام به دکان فری کثیفرفت، جایی در دل بازارچه، که ساندویچ‌هایش بوی تاریخ می‌داد.
+
                 </div>
             ),
         },
@@ -309,15 +319,15 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             icon: <>
-                <SvgImage src="/svg/icon7.svg"
+                <SvgImage src="/svg/icon7.png"
                           alt="stage7"
-                          size={40}
+                          size={30}
                           className="hover:scale-110 transition-transform"
                 />
             </>,
             description: <div className="">
-                <h3 className="font-bold">مرحله هفتم: توزیع در ونک</h3>
-                <p className="text-sm">هاب ونک</p>
+                <h3 className="font-bold">مرحله هفتم</h3>
+                <p className="text-sm text-right">توزیع</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -333,9 +343,8 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="text-black text-sm">
-                    با سبدهای پر از ساندویچ، هدیه و دستور توزیع، غلام‌رضا به میدان ونک رسید تا آن ها عدایا را به دست
-                    برندگان برساند.
+                <div dir={'rtl'} style={{ fontFamily: "'MyCustomFont', sans-serif" }} className="text-black text-[15px] leading-6 text-right">
+                    غلام سبدهای پر ازساندویچ و جوایز را به ونک برد تا پیک ونک هدایا را ارسال کند.
                 </div>
             ),
         },
@@ -348,15 +357,15 @@ const GameMenu: React.FC = () => {
             title: '',
             date: '',
             icon: <>
-                <SvgImage src="/svg/icon8.svg"
+                <SvgImage src="/svg/icon8.png"
                           alt="stage8"
-                          size={40}
+                          size={30}
                           className="hover:scale-110 transition-transform"
                 />
             </>,
             description: <div className="">
-                <h3 className="font-bold">مرحله پایانی: تحویل</h3>
-                <p className="text-sm"> برنده در تابان غربی</p>
+                <h3 className="font-bold">مرحله پایانی</h3>
+                <p className="text-sm text-right">تحویل</p>
                 <button
                     className="disabled:opacity-20 mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={() => {
@@ -372,11 +381,14 @@ const GameMenu: React.FC = () => {
                 </button>
             </div>,
             popupContent: (
-                <div className="text-black text-sm">
-                    و اما برنده… در منطقه‌ای دور، به نام «تابان غربی»، منتظر بود.
-                    غلام، پس از این مسیر طولانی، هدیه را با احترام به برنده تقدیم کرد.
+                <div dir={'rtl'} style={{ fontFamily: "'MyCustomFont', sans-serif" }} className="text-black text-[15px] leading-6 text-right">
+                    و اما برنده… در منطقه‌ای
+                    دور، به نام «تابان غربی»، منتظر بود.
+                    غلام، پس از این مسیر
+                    طولانی، هدیه را با احترام به برنده تقدیم کرد.
                     شاه گفت:
-                    – زنده‌باد غلام‌رضا! او اکنون سردار مأموریت‌های خاص قجری است!
+                    – زنده‌باد غلام‌! تو
+                    اکنون سردار مأموریت‌های خاص قجری هستی .
                 </div>
             ),
         },
@@ -416,9 +428,9 @@ const GameMenu: React.FC = () => {
             {data?.playedStages?.some(
                 (stage: any) => stage.stage === "stage8" && stage.isSuccess === true
             ) && <Link href={'/hub0/game/zboom/rank'}><SvgImage src="/svg/rewardIcon.svg"
-                                           alt="stage8"
-                                           size={40}
-                                           className={'fixed hover:scale-110 animate-bounce transition-transform top-16 left-2 z-50 w-10 h-10'}
+                                                                alt="stage8"
+                                                                size={40}
+                                                                className={'fixed hover:scale-110 animate-bounce transition-transform top-16 left-2 z-50 w-10 h-10'}
             /></Link>}
             {data?.playedStages?.some(
                 (stage: any) => stage.stage === "stage8" && stage.isSuccess === true
