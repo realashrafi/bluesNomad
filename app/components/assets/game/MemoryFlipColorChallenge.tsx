@@ -121,7 +121,7 @@ export default function MemoryFlipColorChallenge({
             return response.json();
         },
         onSuccess: (data) => {
-            console.log('Score saved:', data);
+            // console.log('Score saved:', data);
         },
         onError: (error) => {
             console.error('Error saving score:', error);

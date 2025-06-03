@@ -28,7 +28,7 @@ export default function SignupForm() {
             });
 
             const data = await res.json();
-            console.log(data)
+            // console.log(data)
             setLoading(false)
             setResult(JSON.stringify(data, null, 2));
             Cookies.set('email', email);

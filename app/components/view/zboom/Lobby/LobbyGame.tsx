@@ -397,7 +397,7 @@ const GameMenu: React.FC = () => {
     const handleStageSelect = (stageId: string) => {
         setFocusedMarkerId(stageId);
         localStorage.setItem("lastStageFocus", stageId);
-        console.log("Focused on stage:", stageId);
+        // console.log("Focused on stage:", stageId);
     };
 
     const handleEventClick = (event: any) => {

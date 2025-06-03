@@ -101,15 +101,15 @@ const MapTiler: React.FC<MapTilerProps> = ({
 
             const data = await response.json();
             if (data.features && data.features[0] && data.features[0].geometry) {
-                console.log("Route fetched successfully:", data.features[0].geometry.coordinates.length, "points");
+                // console.log("Route fetched successfully:", data.features[0].geometry.coordinates.length, "points");
                 return data.features[0].geometry.coordinates;
             } else {
-                console.warn("No valid route in response:", JSON.stringify(data, null, 2));
+                // console.warn("No valid route in response:", JSON.stringify(data, null, 2));
                 return coordinates;
             }
         } catch (error) {
-            console.error("Error fetching route:", error);
-            console.log("Falling back to straight line for coordinates:", coordinates);
+            // console.error("Error fetching route:", error);
+            // console.log("Falling back to straight line for coordinates:", coordinates);
             return coordinates;
         }
     };

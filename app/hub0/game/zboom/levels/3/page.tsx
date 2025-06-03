@@ -34,7 +34,7 @@ function Page() {
             setCanPlay(false); // اگر data یا canPlayRoutes وجود نداشته باشد، false بگذار
         }
     }, [data, setCanPlay]);
-    console.log(canPlay)
+    // console.log(canPlay)
     if (!canPlay) {
         return <Loading/>;
     }

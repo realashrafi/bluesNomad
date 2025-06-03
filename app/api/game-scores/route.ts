@@ -6,7 +6,7 @@ async function connectDB(): Promise<void> {
     try {
         if (mongoose.connection.readyState === 0) {
             await mongoose.connect(process.env.MONGODB_URI!);
-            console.log('Connected to MongoDB');
+            // console.log('Connected to MongoDB');
         }
     } catch (error) {
         console.error('MongoDB connection error:', error);
@@ -35,31 +35,31 @@ export async function POST(request: Request) {
 
         const token = request.headers.get('authorization')?.split(' ')[1];
         if (!token) {
-            console.log('No token provided in request');
+            // console.log('No token provided in request');
             return NextResponse.json({ error: 'No token provided' }, { status: 401 });
         }
 
         let decoded;
         try {
             decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string; email: string };
-            console.log('Token decoded:', decoded);
+            // console.log('Token decoded:', decoded);
         } catch (error) {
             console.error('JWT verification error:', error);
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }
 
         const body = await request.json();
-        console.log('Received body:', body);
+        // console.log('Received body:', body);
 
         const { score, level, stage, isSuccess, isUsedHint, unUsedHints } = body;
         if (!score || !level) {
-            console.log('Missing required fields: score or level');
+            // console.log('Missing required fields: score or level');
             return NextResponse.json({ error: 'Score and level are required' }, { status: 400 });
         }
 
         // اعتبارسنجی userId
         if (!mongoose.Types.ObjectId.isValid(decoded.userId)) {
-            console.log('Invalid userId:', decoded.userId);
+            // console.log('Invalid userId:', decoded.userId);
             return NextResponse.json({ error: 'Invalid userId' }, { status: 400 });
         }
 
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
         });
 
         await gameScore.save();
-        console.log('Score saved:', gameScore);
+        // console.log('Score saved:', gameScore);
 
         return NextResponse.json({ message: 'Score saved successfully', gameScore }, { status: 201 });
     } catch (error) {
@@ -89,28 +89,28 @@ export async function GET(request: Request) {
 
         const token = request.headers.get('authorization')?.split(' ')[1];
         if (!token) {
-            console.log('No token provided in GET request');
+            // console.log('No token provided in GET request');
             return NextResponse.json({ error: 'No token provided' }, { status: 401 });
         }
 
         let decoded;
         try {
             decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string; email: string };
-            console.log('Token decoded for GET:', decoded);
+            // console.log('Token decoded for GET:', decoded);
         } catch (error) {
             console.error('JWT verification error in GET:', error);
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }
 
         if (!mongoose.Types.ObjectId.isValid(decoded.userId)) {
-            console.log('Invalid userId:', decoded.userId);
+            // console.log('Invalid userId:', decoded.userId);
             return NextResponse.json({ error: 'Invalid userId' }, { status: 400 });
         }
 
         const scores = await GameScoreModel.find({ userId: new mongoose.Types.ObjectId(decoded.userId) })
             .sort({ timestamp: -1 })
             .lean();
-        console.log('Retrieved scores:', scores);
+        // console.log('Retrieved scores:', scores);
 
         return NextResponse.json({ scores });
     } catch (error) {

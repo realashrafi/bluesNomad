@@ -34,7 +34,7 @@ function Page() {
             setCanPlay(false);
         }
     }, [data, setCanPlay]);
-    console.log(canPlay)
+    // console.log(canPlay)
     if (!canPlay) {
         return <Loading/>;
     }

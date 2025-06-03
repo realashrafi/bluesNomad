@@ -63,14 +63,14 @@ export async function GET(request: Request) {
         // اعتبارسنجی توکن
         const token = request.headers.get('authorization')?.split(' ')[1];
         if (!token) {
-            console.log('No token provided in GET request');
+            // console.log('No token provided in GET request');
             return NextResponse.json({ error: 'No token provided' }, { status: 401 });
         }
 
         let decoded;
         try {
             decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string; email: string };
-            console.log('Token decoded for GET:', decoded);
+            // console.log('Token decoded for GET:', decoded);
         } catch (error) {
             console.error('JWT verification error in GET:', error);
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
@@ -78,7 +78,7 @@ export async function GET(request: Request) {
 
         // اعتبارسنجی userId
         if (!mongoose.Types.ObjectId.isValid(decoded.userId)) {
-            console.log('Invalid userId:', decoded.userId);
+            // console.log('Invalid userId:', decoded.userId);
             return NextResponse.json({ error: 'Invalid userId' }, { status: 400 });
         }
 
@@ -111,13 +111,13 @@ export async function GET(request: Request) {
         // 5. تولید آرایه استیج‌های بازی‌شده
         const playedStages = await getPlayedStages(userId, uniqueStages);
 
-        console.log('User stages data:', {
-            latestStage,
-            uniqueStages,
-            lastAllSuccessStage,
-            canPlayRoutes,
-            playedStages
-        });
+        // console.log('User stages data:', {
+        //     latestStage,
+        //     uniqueStages,
+        //     lastAllSuccessStage,
+        //     canPlayRoutes,
+        //     playedStages
+        // });
 
         return NextResponse.json({
             latestStage,
