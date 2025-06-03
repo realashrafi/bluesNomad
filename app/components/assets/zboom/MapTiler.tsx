@@ -277,7 +277,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
                 center: [targetMarker.lng, targetMarker.lat],
                 zoom: zoom,
                 pitch: targetMarker.pitch ?? defaultPitch,
-                duration: 5000,
+                duration: 10000,
             });
 
             const marker = markersLayerRef.current.find((m) => {
