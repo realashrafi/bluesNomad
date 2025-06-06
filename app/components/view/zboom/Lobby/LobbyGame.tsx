@@ -448,34 +448,6 @@ const GameMenu: React.FC = () => {
                         بازگشت
                     </div>
                 </button>
-                {/*<div className="w-48  bg-gray-100">*/}
-                {/*    <h3 className="text-lg font-bold mb-4">مراحل بازی</h3>*/}
-                {/*    <ul className="space-y-2">*/}
-                {/*        {stages.map((stage) => (*/}
-                {/*            <li key={stage.id}>*/}
-                {/*                <button*/}
-                {/*                    onClick={() => handleStageSelect(stage.id)}*/}
-                {/*                    className={`w-full text-right py-2 px-4 rounded ${*/}
-                {/*                        focusedMarkerId === stage.id*/}
-                {/*                            ? "bg-red-500 text-white"*/}
-                {/*                            : "bg-gray-300 text-black"*/}
-                {/*                    } hover:bg-red-600 hover:text-white transition`}*/}
-                {/*                >*/}
-                {/*                    مرحله {stage.Serial}*/}
-                {/*                </button>*/}
-                {/*            </li>*/}
-                {/*        ))}*/}
-                {/*    </ul>*/}
-                {/*    <button*/}
-                {/*        className="mt-4 w-full py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600"*/}
-                {/*        onClick={() => {*/}
-                {/*            setProgressMarkerId(undefined);*/}
-                {/*            console.log("Progress reset");*/}
-                {/*        }}*/}
-                {/*    >*/}
-                {/*        ریست پیشرفت*/}
-                {/*    </button>*/}
-                {/*</div>*/}
             </BottomSheet>
             {/* نقشه */}
             <div className="fixed inset-0">
