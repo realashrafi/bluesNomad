@@ -70,7 +70,7 @@ function page() {
             <h1 className="text-xl md:text-2xl mb-6" dir="rtl">بررسی بارکد</h1>
             <div className="w-full max-w-md mb-6">
                 {/* اسکنر بارکد */}
-                <div className="mb-4 flex items-center justify-center">
+                <div className="mb-4 flex items-center justify-center flex-col gap-2">
                     <BarcodeScannerComponent
                         width={300}
                         height={300}
