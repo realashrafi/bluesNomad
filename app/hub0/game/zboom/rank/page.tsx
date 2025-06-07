@@ -34,7 +34,7 @@ function page() {
                 throw new Error(errorData.error || 'خطا در دریافت رتبه');
             }
             const data = await response.json();
-            setRank(data.rank);
+            setRank(data);
             setRankError(null);
         } catch (err) {
             setRankError(err.message);
@@ -106,7 +106,12 @@ function page() {
                 {/* نمایش رتبه یا خطا */}
                 {rank && (
                     <p className="text-base md:text-lg text-green-400 text-center mt-4" dir="rtl">
-                        شماره شما: {rank}
+                        رتبه شما: {rank.rank}
+                    </p>
+                )}
+                {rank?.isTopFive === true && (
+                    <p className="text-base md:text-lg text-green-400 text-center mt-4" dir="rtl">
+                        تبریک! شما به عنوان برنده جایزه بزرگ انتخاب شدید!
                     </p>
                 )}
                 {rankError && (

@@ -54,6 +54,12 @@ const GameMenu: React.FC = () => {
     //         setProgressMarkerId(data?.lastAllSuccessStage);
     //     }
     // }, [data]);
+    const handleEventClick = (event: any) => {
+        handleStageSelect(event.id)
+        changeHeight()
+        // console.log(`ایونت ${event.id} کلیک شد:`, event);
+    };
+
     const stages = [
         {
             id: "stage1",
@@ -412,11 +418,6 @@ const GameMenu: React.FC = () => {
         // console.log("Focused on stage:", stageId);
     };
 
-    const handleEventClick = (event: any) => {
-        handleStageSelect(event.id)
-        changeHeight()
-        // console.log(`ایونت ${event.id} کلیک شد:`, event);
-    };
 
 
     return (

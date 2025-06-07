@@ -55,7 +55,7 @@ function Navbar() {
             rangeY={800}
             particleCount={100}
             baseHue={220}
-            className="max-w-full mx-auto p-4 bg-transparent rounded shadow "
+            className="max-w-full mx-auto text-green-400 p-4 bg-transparent rounded shadow "
         >
             <Link href={'/'}>Home</Link>
         </Vortex>
