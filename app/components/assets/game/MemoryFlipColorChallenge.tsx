@@ -132,7 +132,7 @@ export default function MemoryFlipColorChallenge({
     const initGame = (newLevel: number = levels[0]) => {
         const numTiles = 4 + newLevel * 2;
         const gameColors = colors.slice(0, numTiles / 2);
-        const gameImages = images.slice(0, numTiles / 2); // انتخاب تصاویر به تعداد نصف تایل‌ها
+        const gameImages = images.slice(0, numTiles / 2);
         const tilesArray: Tile[] = [];
 
         for (let i = 0; i < gameColors.length; i++) {
@@ -218,10 +218,16 @@ export default function MemoryFlipColorChallenge({
                 newTiles[first].matched = true;
                 newTiles[second].matched = true;
                 setTiles(newTiles);
-                const bonus = stageTime > totalTime / 2 ? 5 * level : 0;
-                const newScore = score + 10 * level + bonus;
+                // امتیاز پایه برای جفت + جایزه سرعت + جایزه جان + جایزه راهنمایی استفاده‌نشده
+                const baseScore = 10 * level;
+                const timeBonus = Math.floor(stageTime * level * 0.5); // امتیاز متناسب با زمان باقی‌مانده
+                const livesBonus = 10 * level * currentLives; // جایزه برای جان‌های باقی‌مانده
+                const hintsBonus = 5 * level * currentHints; // جایزه برای راهنمایی‌های استفاده‌نشده
+                const newScore = score + baseScore + timeBonus + livesBonus + hintsBonus;
                 setScore(newScore);
-                setMessage(`آفرین! یک جفت پیدا کردی!${bonus ? ` جایزه: ${bonus}` : ''}`);
+                setMessage(
+                    `آفرین! یک جفت پیدا کردی! امتیاز پایه: ${baseScore} + زمان: ${timeBonus} + جان: ${livesBonus} + راهنمایی: ${hintsBonus}`
+                );
 
                 if (newTiles.every((tile) => tile.matched)) {
                     const isLevelSuccess = level === levels[levels.length - 1];
@@ -239,21 +245,20 @@ export default function MemoryFlipColorChallenge({
                         setLevel(nextLevel);
                         setCurrentHints((prev) => prev + 1);
                         setMessage('مرحله تمام شد! آماده‌ی مرحله‌ی بعدی باش!');
-                        // onLevelComplete?.(level, newScore, stage, isLevelSuccess, hasUsedHint, currentHints);
                         setTimeout(() => {
                             initGame(nextLevel);
                         }, 1500);
                     } else {
                         setGameOver(true);
-                        // تغییر اینجا: پیام خاص برای اتمام موفقیت‌آمیز آخرین مرحله
                         if (isLevelSuccess) {
-                            setIsDoneStage(true)
-                            setMessage(`تبریک! شما تمام مراحل را با موفقیت پشت سر گذاشتید! امتیاز نهایی: ${newScore}`);
+                            setIsDoneStage(true);
+                            setMessage(
+                                `تبریک! شما تمام مراحل را با موفقیت پشت سر گذاشتید! امتیاز نهایی: ${newScore}`
+                            );
                             setTimeout(() => router.push('/hub0/game/zboom'), 2000);
                         } else {
-                            setMessage(`مرحله تمام شد! امتیاز نهایی: ${score}`);
+                            setMessage(`مرحله تمام شد! امتیاز نهایی: ${newScore}`);
                         }
-                        // onGameOver?.(score, level, stage, isLevelSuccess, hasUsedHint, currentHints);
                     }
                 }
             } else {
@@ -274,7 +279,6 @@ export default function MemoryFlipColorChallenge({
                                 setBestScore(score);
                                 localStorage.setItem('bestScore', score.toString());
                             }
-                            // onGameOver?.(score, level, stage, false, hasUsedHint, currentHints);
                         } else {
                             setMessage('مطابقت نداشت، یک قلب از دست رفت!');
                         }
@@ -288,7 +292,7 @@ export default function MemoryFlipColorChallenge({
         } else {
             setIsClickLocked(false);
         }
-    }, [selectedTiles, score, level, bestScore, tiles, stage, hasUsedHint, currentHints, levels]);
+    }, [selectedTiles, score, level, bestScore, tiles, stage, hasUsedHint, currentHints, currentLives, stageTime, levels]);
 
     const handleTileClick = (index: number) => {
         if (
@@ -399,7 +403,7 @@ export default function MemoryFlipColorChallenge({
 
             {isAuthenticated && gameStarted && (
                 <div
-                    className="grid gap-2 w-full"
+                    className=" flex flex-wrap items-center justify-center gap-2 w-full"
                     style={{
                         gridTemplateColumns: `repeat(auto-fit, minmax(${Math.min(80, 400 / (4 + level))}px, 1fr))`,
                     }}
@@ -408,7 +412,7 @@ export default function MemoryFlipColorChallenge({
                         <button
                             key={index}
                             onClick={() => handleTileClick(index)}
-                            className={`w-full aspect-square rounded-lg shadow transition-all transform duration-300 ${
+                            className={`w-16 aspect-square rounded-lg shadow transition-all transform duration-300 ${
                                 tile.flipped || tile.matched || memorizePhase || showColors
                                     ? tile.color
                                     : 'bg-gray-300'
