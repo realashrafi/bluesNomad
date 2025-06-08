@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import UserModel from '@/models/User'; // مسیر فایل مدل
 
 async function connectDB() {
     if (mongoose.connection.readyState === 0) {
@@ -15,32 +16,26 @@ async function connectDB() {
     }
 }
 
-const userSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    name: { type: String },
-});
-const UserModel = mongoose.models.User || mongoose.model('User', userSchema);
-
 export async function POST(request: Request) {
     try {
         await connectDB();
         const { email, password } = await request.json();
         console.log('Received:', { email, password });
 
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ email }).select('+password'); // صراحتاً password رو انتخاب کنید
+        console.log('User found:', { email: user?.email, passwordExists: !!user?.password, password: user?.password });
+
         if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            return NextResponse.json({ error: 'کاربر پیدا نشد' }, { status: 404 });
         }
-        console.log('User found:', { email: user.email, passwordExists: !!user.password, password: user.password });
 
         if (!user.password) {
-            return NextResponse.json({ error: 'Password not set for this user' }, { status: 500 });
+            return NextResponse.json({ error: 'پسورد برای این کاربر تنظیم نشده' }, { status: 500 });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+            return NextResponse.json({ error: 'پسورد نامعتبر' }, { status: 401 });
         }
 
         console.log('JWT_SECRET:', process.env.JWT_SECRET);
@@ -54,7 +49,6 @@ export async function POST(request: Request) {
         );
         console.log('Generated token:', token);
 
-        // ارسال توکن در بدنه پاسخ JSON
         return NextResponse.json({
             user: { email: user.email, name: user.name },
             token: token

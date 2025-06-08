@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import UserModel from "@/models/User";
 
 async function connectDB() {
     if (mongoose.connection.readyState === 0) {
@@ -13,13 +14,6 @@ async function connectDB() {
         }
     }
 }
-
-const userSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    name: { type: String, required: true }
-}, { timestamps: true, strict: true }); // اضافه کردن strict: true
-const UserModel = mongoose.models.User || mongoose.model('User', userSchema);
 
 export async function POST(req: Request) {
     try {
@@ -38,19 +32,20 @@ export async function POST(req: Request) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log('Hashed password:', hashedPassword);
-        const newUser = new UserModel({
-            email,
-            password: hashedPassword,
-            name
-        });
-        console.log('New user before save:', newUser.toObject()); // لاگ قبل از ذخیره
-        const result = await newUser.save();
-        console.log('Saved user:', result.toObject()); // لاگ بعد از ذخیره
-        console.log('Password stored:', !!result.password); // تأیید وجود password
 
-        return NextResponse.json({ message: "ثبت‌نام با موفقیت انجام شد", userId: result._id });
+        const newUserData = { email, password: hashedPassword, name };
+        console.log('New user data:', newUserData);
+        const newUser = new UserModel(newUserData);
+        console.log('New user before save (raw):', newUser.toObject());
+        console.log('Password in newUser:', !!newUser.password);
+
+        const result = await newUser.save();
+        console.log('Saved user (raw):', result.toObject());
+        console.log('Password stored:', !!result.password);
+
+        return NextResponse.json({ message: "ثبت‌نام با موفقیت", userId: result._id });
     } catch (error) {
         console.error('Error:', error);
-        return NextResponse.json({ error: "یه خطایی پیش اومده!" }, { status: 500 });
+        return NextResponse.json({ error: "یه خطایی!" }, { status: 500 });
     }
 }
