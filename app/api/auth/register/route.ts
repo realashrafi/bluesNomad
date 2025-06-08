@@ -1,37 +1,56 @@
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import client from "@/lib/mongodb";
+
+async function connectDB() {
+    if (mongoose.connection.readyState === 0) {
+        try {
+            await mongoose.connect(process.env.MONGODB_URI!);
+            console.log("Connected to MongoDB via Mongoose");
+        } catch (error) {
+            console.error("Failed to connect to MongoDB:", error);
+            throw error;
+        }
+    }
+}
+
+const userSchema = new mongoose.Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    name: { type: String, required: true }
+}, { timestamps: true, strict: true }); // اضافه کردن strict: true
+const UserModel = mongoose.models.User || mongoose.model('User', userSchema);
 
 export async function POST(req: Request) {
     try {
+        await connectDB();
         const { email, password, name } = await req.json();
+        console.log('Received:', { email, password, name });
 
-        // اعتبارسنجی فیلدها
         if (!email || !password || !name) {
             return NextResponse.json({ error: "ایمیل، پسورد یا نام خالیه!" }, { status: 400 });
         }
 
-        const db = client.db("blues-nomad");
-        const users = db.collection("users");
-
-        const existingUser = await users.findOne({ email });
-
+        const existingUser = await UserModel.findOne({ email });
         if (existingUser) {
             return NextResponse.json({ error: "کاربر قبلاً ثبت‌نام کرده!" }, { status: 409 });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        const result = await users.insertOne({
+        console.log('Hashed password:', hashedPassword);
+        const newUser = new UserModel({
             email,
             password: hashedPassword,
-            name, // اضافه کردن فیلد name
-            createdAt: new Date(),
+            name
         });
+        console.log('New user before save:', newUser.toObject()); // لاگ قبل از ذخیره
+        const result = await newUser.save();
+        console.log('Saved user:', result.toObject()); // لاگ بعد از ذخیره
+        console.log('Password stored:', !!result.password); // تأیید وجود password
 
-        return NextResponse.json({ message: "ثبت‌نام با موفقیت انجام شد", userId: result.insertedId });
-    } catch (err) {
-        console.error(err);
+        return NextResponse.json({ message: "ثبت‌نام با موفقیت انجام شد", userId: result._id });
+    } catch (error) {
+        console.error('Error:', error);
         return NextResponse.json({ error: "یه خطایی پیش اومده!" }, { status: 500 });
     }
 }
