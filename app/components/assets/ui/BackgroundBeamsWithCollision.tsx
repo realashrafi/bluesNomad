@@ -13,7 +13,9 @@ export const BackgroundBeamsWithCollision = ({
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const parentRef = useRef<HTMLDivElement>(null);
-
+    useEffect(() => {
+        document.body.removeAttribute('cz-shortcut-listen');
+    }, []);
     const beams = [
         {
             initialX: 10,

@@ -80,7 +80,7 @@ const UserGrid: React.FC<UserGridProps> = ({ users }) => {
                                                 className="rounded-md"
                                             />
                                         </div>
-                                        <div className="text-center print:text-right w-full">
+                                        <div className="text-center print:text-center w-full">
                                             <p className="text-sm sm:text-base font-semibold text-gray-800">
                                                 نام: {user.name}
                                             </p>
@@ -132,6 +132,10 @@ const UserGrid: React.FC<UserGridProps> = ({ users }) => {
                         page-break-inside: avoid;
                         margin-bottom: 10mm;
                         width: 100%;
+                        text-align: center !important;
+                    }
+                    .print-content > div > div {
+                        text-align: center !important;
                     }
                     .print\\:hidden {
                         display: none;
