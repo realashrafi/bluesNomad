@@ -12,7 +12,7 @@ interface Marker {
     Serial?: number;
     popupContent?: React.ReactNode;
     pitch?: number;
-    icon?: React.ReactNode; // فیلد جدید برای آیکون سفارشی (Fragment یا کامپوننت)
+    icon?: React.ReactNode;
 }
 
 interface MapTilerProps {
@@ -39,6 +39,7 @@ const MapTiler: React.FC<MapTilerProps> = ({
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<MapTilerMap | null>(null);
     const markersLayerRef = useRef<MapTilerMarker[]>([]);
+    const routeMarkerRef = useRef<MapTilerMarker | null>(null);
     const [mapLoaded, setMapLoaded] = useState(false);
 
     // مقداردهی اولیه نقشه
@@ -101,15 +102,11 @@ const MapTiler: React.FC<MapTilerProps> = ({
 
             const data = await response.json();
             if (data.features && data.features[0] && data.features[0].geometry) {
-                // console.log("Route fetched successfully:", data.features[0].geometry.coordinates.length, "points");
                 return data.features[0].geometry.coordinates;
             } else {
-                // console.warn("No valid route in response:", JSON.stringify(data, null, 2));
                 return coordinates;
             }
         } catch (error) {
-            // console.error("Error fetching route:", error);
-            // console.log("Falling back to straight line for coordinates:", coordinates);
             return coordinates;
         }
     };
@@ -126,11 +123,9 @@ const MapTiler: React.FC<MapTilerProps> = ({
         markers.forEach((marker) => {
             const iconElement = document.createElement("div");
 
-            // اگر آیکون سفارشی ارائه شده باشد، آن را رندر کنید
             if (marker.icon) {
                 createRoot(iconElement).render(marker.icon);
             } else {
-                // آیکون پیش‌فرض (SVG قبلی)
                 iconElement.innerHTML = `
                     <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#E74C3C"/>
@@ -148,12 +143,10 @@ const MapTiler: React.FC<MapTilerProps> = ({
 
             markersLayerRef.current.push(mapMarker);
 
-            // کلیک روی مارکر
             mapMarker.getElement().addEventListener("click", () => {
                 onMarkerClick?.(marker.id);
             });
 
-            // پاپ‌آپ
             if (marker.popupContent) {
                 const popupContainer = document.createElement("div");
                 createRoot(popupContainer).render(marker.popupContent);
@@ -173,16 +166,13 @@ const MapTiler: React.FC<MapTilerProps> = ({
         const map = mapInstanceRef.current;
         if (!map || !mapLoaded) return;
 
-        // پاک کردن لایه‌های قبلی
         if (map.getLayer("default-path")) map.removeLayer("default-path");
         if (map.getSource("default-path")) map.removeSource("default-path");
         if (map.getLayer("progress-path")) map.removeLayer("progress-path");
         if (map.getSource("progress-path")) map.removeSource("progress-path");
 
-        // مرتب‌سازی مارکرها بر اساس Serial
         const sortedMarkers = [...markers].sort((a, b) => (a.Serial || 0) - (b.Serial || 0));
 
-        // مسیر پیش‌فرض (آبی)
         if (sortedMarkers.length > 1) {
             const defaultPathCoordinates = sortedMarkers.map((marker) => [marker.lng, marker.lat]);
             //@ts-expect-error
@@ -216,7 +206,6 @@ const MapTiler: React.FC<MapTilerProps> = ({
             });
         }
 
-        // مسیر پیشرفت (سبز)
         if (progressMarkerId) {
             const progressMarkerIndex = sortedMarkers.findIndex((m) => m.id === progressMarkerId);
             if (progressMarkerIndex >= 0) {
@@ -266,32 +255,118 @@ const MapTiler: React.FC<MapTilerProps> = ({
         };
     }, [markers, progressMarkerId, mapLoaded]);
 
-    // فوکوس روی مارکر بدون رندر مجدد
+    // فوکوس روی مارکر با حرکت در امتداد مسیر و نمایش آیکون متحرک
     useEffect(() => {
         const map = mapInstanceRef.current;
         if (!map || !mapLoaded || !focusMarkerId) return;
 
+        const sortedMarkers = [...markers].sort((a, b) => (a.Serial || 0) - (b.Serial || 0));
         const targetMarker = markers.find((m) => m.id === focusMarkerId);
-        if (targetMarker) {
-            map.easeTo({
-                center: [targetMarker.lng, targetMarker.lat],
-                zoom: zoom,
-                pitch: targetMarker.pitch ?? defaultPitch,
-                duration: 10000,
-            });
+        if (!targetMarker) return;
 
-            const marker = markersLayerRef.current.find((m) => {
-                const lngLat = m.getLngLat();
-                return (
-                    Math.abs(lngLat.lng - targetMarker.lng) < 0.0001 &&
-                    Math.abs(lngLat.lat - targetMarker.lat) < 0.0001
-                );
-            });
-            if (marker && marker.getPopup()) {
-                marker.togglePopup();
+        // پیدا کردن مارکر قبلی (بر اساس Serial) یا نقطه شروع
+        const targetIndex = sortedMarkers.findIndex((m) => m.id === focusMarkerId);
+        const startMarker = targetIndex > 0 ? sortedMarkers[targetIndex - 1] : sortedMarkers[0];
+        const startCoords = startMarker ? [startMarker.lng, startMarker.lat] : center;
+
+        // دریافت مسیر بین مارکر شروع و مارکر هدف
+        //@ts-expect-error
+        fetchRoute([startCoords, [targetMarker.lng, targetMarker.lat]]).then((routeCoords) => {
+            if (!mapInstanceRef.current) return;
+
+            // حذف مارکر متحرک قبلی (اگر وجود داشته باشد)
+            if (routeMarkerRef.current) {
+                routeMarkerRef.current.remove();
+                routeMarkerRef.current = null;
             }
-        }
-    }, [focusMarkerId, markers, zoom, mapLoaded, defaultPitch]);
+
+            // ایجاد آیکون متحرک
+            const routeIconElement = document.createElement("div");
+            routeIconElement.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="#7ad032" />
+                    <circle cx="12" cy="12" r="5" fill="#ffffff" />
+                </svg>
+            `;
+            const routeMarker = new MapTilerMarker({
+                element: routeIconElement,
+                anchor: "center",
+            }).setLngLat([routeCoords[0][0], routeCoords[0][1]]).addTo(map);
+            routeMarkerRef.current = routeMarker;
+
+            let step = 0;
+            const steps = routeCoords.length;
+            const durationPerStep = 3000 / steps; // کل مدت زمان 3 ثانیه، تقسیم بر تعداد نقاط مسیر
+
+            // تابع برای حرکت تدریجی در امتداد مسیر
+            const animateAlongRoute = () => {
+                if (step >= steps || !mapInstanceRef.current || !routeMarkerRef.current) return;
+
+                const currentCoord = routeCoords[step];
+                // حرکت دوربین
+                mapInstanceRef.current.flyTo({
+                    center: [currentCoord[0], currentCoord[1]],
+                    zoom: 17, // زوم متوسط برای دنبال کردن مسیر
+                    pitch: targetMarker.pitch ?? defaultPitch,
+                    duration: durationPerStep,
+                    essential: true,
+                });
+
+                // حرکت آیکون در امتداد مسیر
+                routeMarkerRef.current.setLngLat([currentCoord[0], currentCoord[1]]);
+
+                step++;
+
+                // اگر به آخر مسیر رسیدیم، فوکوس نهایی و حذف آیکون
+                if (step === steps) {
+                    setTimeout(() => {
+                        if (!mapInstanceRef.current) return;
+                        mapInstanceRef.current.flyTo({
+                            center: [targetMarker.lng, targetMarker.lat],
+                            zoom: zoom, // زوم نهایی به سطح اصلی
+                            pitch: targetMarker.pitch ?? defaultPitch,
+                            duration: 1000, // 1 ثانیه برای فوکوس نهایی
+                            essential: true,
+                        });
+
+                        // نمایش پاپ‌آپ
+                        const marker = markersLayerRef.current.find((m) => {
+                            const lngLat = m.getLngLat();
+                            return (
+                                Math.abs(lngLat.lng - targetMarker.lng) < 0.0001 &&
+                                Math.abs(lngLat.lat - targetMarker.lat) < 0.0001
+                            );
+                        });
+                        if (marker && marker.getPopup()) {
+                            marker.togglePopup();
+                        }
+
+                        // حذف آیکون متحرک پس از اتمام
+                        if (routeMarkerRef.current) {
+                            routeMarkerRef.current.remove();
+                            routeMarkerRef.current = null;
+                        }
+                    }, durationPerStep);
+                } else {
+                    // ادامه انیمیشن برای نقطه بعدی
+                    setTimeout(animateAlongRoute, durationPerStep);
+                }
+            };
+
+            // شروع انیمیشن
+            animateAlongRoute();
+        });
+    }, [focusMarkerId, markers, zoom, mapLoaded, defaultPitch, center]);
+
+    // پاکسازی مارکر متحرک هنگام اتمام
+    useEffect(() => {
+        return () => {
+            if (routeMarkerRef.current) {
+                routeMarkerRef.current.remove();
+                routeMarkerRef.current = null;
+            }
+        };
+    }, []);
 
     return <div ref={mapRef} className={className} />;
 };
