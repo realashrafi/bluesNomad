@@ -339,7 +339,7 @@ export default function MemoryFlipColorChallenge({
     };
 
     return (
-        <div className="flex mx-auto flex-col items-center justify-center rounded-lg p-4 w-full max-w-3xl min-h-screen">
+        <div className="flex mx-auto flex-col lg:mt-0 mt-10 items-center justify-center rounded-lg p-4 w-full max-w-3xl min-h-screen">
             <div className="w-full text-center mb-4">
                 <img src="/images/zboomTitle.png" className={'w-40 mx-auto mb-10 bg-amber-500 p-2 rounded-lg'} alt="zboomTitle"/>
                 <h1 className="text-xl md:text-2xl font-bold">بازی چالش حافظه رنگی</h1>

@@ -5,6 +5,8 @@ import Cookies from 'js-cookie';
 import Loading from '@/app/components/assets/ui/Loading';
 import { TbMoodEmptyFilled } from 'react-icons/tb';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import UserGrid from "@/app/components/assets/zboom/UserGrid";
+
 
 // تعریف نوع‌ها برای پاسخ API
 interface User {
@@ -84,7 +86,7 @@ function Page() {
     // حالت عدم احراز هویت
     if (!isAuthenticated) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen p-4 ">
+            <div className="flex flex-col items-center justify-center min-h-screen p-4">
                 <p className="text-lg md:text-xl font-semibold text-red-600 animate-pulse" dir="rtl">
                     لطفاً ابتدا وارد سیستم شوید
                 </p>
@@ -100,7 +102,7 @@ function Page() {
     // حالت خطا
     if (error) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen p-4 ">
+            <div className="flex flex-col items-center justify-center min-h-screen p-4">
                 <p className="text-lg md:text-xl font-semibold text-red-600" dir="rtl">
                     خطا در دریافت اطلاعات: {error.message}
                 </p>
@@ -111,7 +113,7 @@ function Page() {
     // اگر داده‌ای وجود نداشته باشد
     if (!data || !data.users || data.users.length === 0) {
         return (
-            <div className="flex flex-col gap-4 items-center justify-center min-h-screen p-4 ">
+            <div className="flex flex-col gap-4 items-center justify-center min-h-screen p-4">
                 <p className="text-lg md:text-xl font-semibold text-gray-700 animate-pulse" dir="rtl">
                     داده‌ای یافت نشد
                 </p>
@@ -126,7 +128,9 @@ function Page() {
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-blue-800 mb-8 drop-shadow-md">
                     اطلاعات کاربران و لاگ‌های بازی
                 </h1>
-                <div className="overflow-x-auto rounded-xl shadow-lg">
+                {/* افزودن گرید کاربران */}
+                <UserGrid users={data.users.map((item) => item.user)} />
+                <div className="overflow-x-auto rounded-xl shadow-lg mt-8">
                     <table className="w-full border-collapse bg-white/90 rounded-xl">
                         <thead>
                         <tr className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">

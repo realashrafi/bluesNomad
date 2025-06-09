@@ -25,6 +25,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-qr-barcode-scanner": "^2.1.6",
+    "react-qr-code": "^2.0.15",
     "simplex-noise": "^4.0.3",
     "tailwind-merge": "^3.3.0",
     "vanta": "^0.5.24"

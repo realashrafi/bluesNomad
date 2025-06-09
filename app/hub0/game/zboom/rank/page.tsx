@@ -1,12 +1,12 @@
 /* eslint-disable */
 //@ts-nocheck
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
-import {Input} from "@/app/components/assets/ui/Input";
+import { Input } from '@/app/components/assets/ui/Input';
 
-function page() {
+function Page() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [manualInput, setManualInput] = useState('');
     const [scannedId, setScannedId] = useState('');
@@ -71,15 +71,22 @@ function page() {
             <div className="w-full max-w-md mb-6">
                 {/* اسکنر بارکد */}
                 <div className="mb-4 flex items-center justify-center flex-col gap-2">
-                    <BarcodeScannerComponent
-                        width={300}
-                        height={300}
-                        onUpdate={(err, result) => {
-                            if (result) {
-                                handleScan(result.text);
-                            }
-                        }}
-                    />
+                    <div className="relative w-[300px] h-[300px]">
+                        <BarcodeScannerComponent
+                            width={300}
+                            height={300}
+                            onUpdate={(err, result) => {
+                                if (result) {
+                                    handleScan(result.text);
+                                }
+                            }}
+                        />
+                        {/* افکت اسکن */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="scan-line w-full h-1 bg-green-500 opacity-70 animate-scan" />
+                        </div>
+                        <div className="absolute inset-0 border-2 border-green-500 rounded-md opacity-50" />
+                    </div>
                     <p className="text-sm text-center" dir="rtl">
                         شناسه اسکن‌شده: {scannedId || 'هیچ'}
                     </p>
@@ -90,7 +97,7 @@ function page() {
                         <label className="">بارکد</label>
                         <Input
                             type="text"
-                            className="w-full  text-black p-2 border rounded"
+                            className="w-full text-black p-2 border rounded"
                             value={manualInput}
                             onChange={(e) => setManualInput(e.target.value)}
                             required
@@ -120,8 +127,25 @@ function page() {
                     </p>
                 )}
             </div>
+            {/* استایل‌های افکت اسکن */}
+            <style jsx global>{`
+                .animate-scan {
+                    animation: scan 2s infinite linear;
+                }
+                @keyframes scan {
+                    0% {
+                        transform: translateY(-150px);
+                    }
+                    50% {
+                        transform: translateY(150px);
+                    }
+                    100% {
+                        transform: translateY(-150px);
+                    }
+                }
+            `}</style>
         </div>
     );
 }
 
-export default page;
+export default Page;
