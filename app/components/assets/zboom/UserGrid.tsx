@@ -16,18 +16,15 @@ interface UserGridProps {
 const UserGrid: React.FC<UserGridProps> = ({ users }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    // تابع برای مدیریت باز و بسته شدن آکاردئون
     const toggleAccordion = () => {
         setIsExpanded((prev) => !prev);
     };
 
-    // تابع برای چاپ
     const handlePrint = () => {
-        // باز کردن آکاردئون قبل از چاپ
         setIsExpanded(true);
         setTimeout(() => {
             window.print();
-        }, 1000); // تاخیر برای اطمینان از رندر کامل آکاردئون
+        }, 1000);
     };
 
     return (
@@ -70,14 +67,19 @@ const UserGrid: React.FC<UserGridProps> = ({ users }) => {
                                         key={user.id}
                                         className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 flex flex-col items-center justify-center min-h-[200px] print:bg-white print:p-2 print:border print:shadow-none print:min-h-fit"
                                     >
-                                        <div className="mb-3 print:mb-2">
+                                        <div className="mb-3 print:mb-2 relative">
                                             <QRCode
                                                 value={user.id}
                                                 size={128}
                                                 bgColor="#ffffff"
                                                 fgColor="#000000"
-                                                level="Q"
+                                                level="H" // سطح خطاگیری بالا برای حفظ خوانایی
                                                 className="rounded-md"
+                                            />
+                                            <img
+                                                src="/images/zboomLogo.png" // مسیر آیکون خود را وارد کنید
+                                                alt="Icon"
+                                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 print:w-6 print:h-6"
                                             />
                                         </div>
                                         <div className="text-center print:text-center w-full">
@@ -95,7 +97,6 @@ const UserGrid: React.FC<UserGridProps> = ({ users }) => {
                     )}
                 </AnimatePresence>
             </div>
-            {/* استایل‌های چاپ */}
             <style jsx global>{`
                 @media print {
                     body * {
