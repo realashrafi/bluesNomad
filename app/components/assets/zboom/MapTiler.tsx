@@ -264,99 +264,167 @@ const MapTiler: React.FC<MapTilerProps> = ({
         const targetMarker = markers.find((m) => m.id === focusMarkerId);
         if (!targetMarker) return;
 
-        // پیدا کردن مارکر قبلی (بر اساس Serial) یا نقطه شروع
+        // متغیر برای لغو انیمیشن
+        let isCancelled = false;
+
+        // تعریف animationFrameId در سطح useEffect
+        let animationFrameId: number | null = null;
+
+        // بستن تمام پاپ‌آپ‌های باز
+        markersLayerRef.current.forEach((marker) => {
+            if (marker.getPopup()) {
+                marker.getPopup().remove();
+            }
+        });
+
+        // پیدا کردن مارکر قبلی یا نقطه شروع
         const targetIndex = sortedMarkers.findIndex((m) => m.id === focusMarkerId);
         const startMarker = targetIndex > 0 ? sortedMarkers[targetIndex - 1] : sortedMarkers[0];
-        const startCoords = startMarker ? [startMarker.lng, startMarker.lat] : center;
+        const fallbackStartCoords = startMarker ? [startMarker.lng, startMarker.lat] : center;
 
-        // دریافت مسیر بین مارکر شروع و مارکر هدف
-        //@ts-expect-error
-        fetchRoute([startCoords, [targetMarker.lng, targetMarker.lat]]).then((routeCoords) => {
-            if (!mapInstanceRef.current) return;
+        // تعیین نقطه شروع: اگر مارکر متحرک وجود دارد، از موقعیت فعلی آن استفاده کن
+        let startCoords: [number, number];
+        if (routeMarkerRef.current) {
+            const currentLngLat = routeMarkerRef.current.getLngLat();
+            startCoords = [currentLngLat.lng, currentLngLat.lat];
+        } else {
+            //@ts-expect-error
+            startCoords = fallbackStartCoords;
+        }
 
-            // حذف مارکر متحرک قبلی (اگر وجود داشته باشد)
-            if (routeMarkerRef.current) {
-                routeMarkerRef.current.remove();
-                routeMarkerRef.current = null;
-            }
+        // تابع مشترک برای شروع انیمیشن
+        const startAnimation = (coords: [number, number][]) => {
+            if (!mapInstanceRef.current || isCancelled) return;
 
-            // ایجاد آیکون متحرک
-            const routeIconElement = document.createElement("div");
-            routeIconElement.innerHTML = `
+            // اگر مارکر متحرک وجود ندارد، یک آیکون جدید ایجاد کن
+            if (!routeMarkerRef.current) {
+                const routeIconElement = document.createElement("div");
+                routeIconElement.innerHTML = `
                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="10" fill="#7ad032" />
                     <circle cx="12" cy="12" r="5" fill="#ffffff" />
                 </svg>
             `;
-            const routeMarker = new MapTilerMarker({
-                element: routeIconElement,
-                anchor: "center",
-            }).setLngLat([routeCoords[0][0], routeCoords[0][1]]).addTo(map);
-            routeMarkerRef.current = routeMarker;
+                const routeMarker = new MapTilerMarker({
+                    element: routeIconElement,
+                    anchor: "center",
+                }).setLngLat([coords[0][0], coords[0][1]]).addTo(map);
+                routeMarkerRef.current = routeMarker;
+            }
 
-            let step = 0;
-            const steps = routeCoords.length;
-            const durationPerStep = 3000 / steps; // کل مدت زمان 3 ثانیه، تقسیم بر تعداد نقاط مسیر
+            const totalDuration = 10000; // مدت زمان کل انیمیشن (3 ثانیه)
+            let startTime: number | null = null;
 
-            // تابع برای حرکت تدریجی در امتداد مسیر
-            const animateAlongRoute = () => {
-                if (step >= steps || !mapInstanceRef.current || !routeMarkerRef.current) return;
+            // تابع درون‌یابی خطی برای مختصات
+            const lerp = (start: number, end: number, t: number) => {
+                return start + (end - start) * t;
+            };
 
-                const currentCoord = routeCoords[step];
+            // تابع easing برای حرکت نرم‌تر (ease-in-out)
+            const easeInOutQuad = (t: number) => {
+                return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            };
+
+            // تابع انیمیشن
+            const animateAlongRoute = (timestamp: number) => {
+                if (!mapInstanceRef.current || !routeMarkerRef.current || isCancelled) return;
+
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / totalDuration, 1); // پیشرفت از 0 تا 1
+                const easedProgress = easeInOutQuad(progress); // اعمال easing
+
+                // محاسبه موقعیت فعلی در مسیر
+                const totalSteps = coords.length - 1;
+                const currentStep = Math.min(Math.floor(easedProgress * totalSteps), totalSteps - 1);
+                const stepProgress = easedProgress * totalSteps - currentStep;
+                const startCoord = coords[currentStep];
+                const endCoord = coords[currentStep + 1] || startCoord;
+
+                // درون‌یابی مختصات
+                const currentLng = lerp(startCoord[0], endCoord[0], stepProgress);
+                const currentLat = lerp(startCoord[1], endCoord[1], stepProgress);
+
                 // حرکت دوربین
-                mapInstanceRef.current.flyTo({
-                    center: [currentCoord[0], currentCoord[1]],
-                    zoom: 17, // زوم متوسط برای دنبال کردن مسیر
-                    pitch: targetMarker.pitch ?? defaultPitch,
-                    duration: durationPerStep,
-                    essential: true,
-                });
+                mapInstanceRef.current.setCenter([currentLng, currentLat]);
+                mapInstanceRef.current.setZoom(17);
+                mapInstanceRef.current.setPitch(targetMarker.pitch ?? defaultPitch);
 
-                // حرکت آیکون در امتداد مسیر
-                routeMarkerRef.current.setLngLat([currentCoord[0], currentCoord[1]]);
+                // حرکت مارکر
+                routeMarkerRef.current.setLngLat([currentLng, currentLat]);
 
-                step++;
-
-                // اگر به آخر مسیر رسیدیم، فوکوس نهایی و حذف آیکون
-                if (step === steps) {
-                    setTimeout(() => {
-                        if (!mapInstanceRef.current) return;
-                        mapInstanceRef.current.flyTo({
-                            center: [targetMarker.lng, targetMarker.lat],
-                            zoom: zoom, // زوم نهایی به سطح اصلی
-                            pitch: targetMarker.pitch ?? defaultPitch,
-                            duration: 1000, // 1 ثانیه برای فوکوس نهایی
-                            essential: true,
-                        });
-
-                        // نمایش پاپ‌آپ
-                        const marker = markersLayerRef.current.find((m) => {
-                            const lngLat = m.getLngLat();
-                            return (
-                                Math.abs(lngLat.lng - targetMarker.lng) < 0.0001 &&
-                                Math.abs(lngLat.lat - targetMarker.lat) < 0.0001
-                            );
-                        });
-                        if (marker && marker.getPopup()) {
-                            marker.togglePopup();
-                        }
-
-                        // حذف آیکون متحرک پس از اتمام
-                        if (routeMarkerRef.current) {
-                            routeMarkerRef.current.remove();
-                            routeMarkerRef.current = null;
-                        }
-                    }, durationPerStep);
+                // ادامه انیمیشن تا پایان
+                if (progress < 1) {
+                    animationFrameId = requestAnimationFrame(animateAlongRoute);
                 } else {
-                    // ادامه انیمیشن برای نقطه بعدی
-                    setTimeout(animateAlongRoute, durationPerStep);
+                    mapInstanceRef.current.flyTo({
+                        center: [targetMarker.lng, targetMarker.lat],
+                        zoom: zoom,
+                        pitch: targetMarker.pitch ?? defaultPitch,
+                        duration: 1000,
+                        essential: true,
+                    });
+
+                    // نمایش پاپ‌آپ
+                    const marker = markersLayerRef.current.find((m) => {
+                        const lngLat = m.getLngLat();
+                        return (
+                            Math.abs(lngLat.lng - targetMarker.lng) < 0.0001 &&
+                            Math.abs(lngLat.lat - targetMarker.lat) < 0.0001
+                        );
+                    });
+                    if (marker && marker.getPopup()) {
+                        marker.togglePopup();
+                    }
+
+                    // حذف آیکون متحرک
+                    if (routeMarkerRef.current) {
+                        routeMarkerRef.current.remove();
+                        routeMarkerRef.current = null;
+                    }
                 }
             };
 
             // شروع انیمیشن
-            animateAlongRoute();
-        });
-    }, [focusMarkerId, markers, zoom, mapLoaded, defaultPitch, center]);
+            animationFrameId = requestAnimationFrame(animateAlongRoute);
+        };
+
+        // دریافت مسیر
+
+        fetchRoute([startCoords, [targetMarker.lng, targetMarker.lat]])
+            .then((routeCoords) => {
+                if (!mapInstanceRef.current || isCancelled) return;
+                // در صورت موفقیت، از مختصات مسیر استفاده کن
+                const coords = routeCoords.length > 1 ? routeCoords : [startCoords, [targetMarker.lng, targetMarker.lat]];
+                //@ts-expect-error
+                startAnimation(coords);
+            })
+            .catch((error) => {
+                console.error("Failed to fetch route:", error);
+                // در صورت خطا، از مختصات اولیه استفاده کن
+                if (!mapInstanceRef.current || isCancelled) return;
+                const coords = [startCoords, [targetMarker.lng, targetMarker.lat]];
+                //@ts-expect-error
+                startAnimation(coords);
+            });
+
+        // تمیزکاری
+        return () => {
+            isCancelled = true;
+            if (routeMarkerRef.current) {
+                routeMarkerRef.current.remove();
+                routeMarkerRef.current = null;
+            }
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            markersLayerRef.current.forEach((marker) => {
+                if (marker.getPopup()) {
+                    marker.getPopup().remove();
+                }
+            });
+        };
+    }, [focusMarkerId, markers, mapLoaded, defaultPitch]);
 
     // پاکسازی مارکر متحرک هنگام اتمام
     useEffect(() => {
