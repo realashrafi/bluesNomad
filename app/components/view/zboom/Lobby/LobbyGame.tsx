@@ -36,7 +36,7 @@ const GameMenu: React.FC = () => {
     });
     const changeHeight = () => {
         if (bottomSheetRef.current) {
-            bottomSheetRef.current.setHeight(350);
+            bottomSheetRef.current.setHeight(310);
         }
     };
 
