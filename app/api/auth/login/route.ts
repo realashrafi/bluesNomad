@@ -8,7 +8,7 @@ async function connectDB() {
     if (mongoose.connection.readyState === 0) {
         try {
             await mongoose.connect(process.env.MONGODB_URI!);
-            console.log("Connected to MongoDB via Mongoose");
+            // console.log("Connected to MongoDB via Mongoose");
         } catch (error) {
             console.error("Failed to connect to MongoDB:", error);
             throw error;
@@ -20,10 +20,10 @@ export async function POST(request: Request) {
     try {
         await connectDB();
         const { email, password } = await request.json();
-        console.log('Received:', { email, password });
+        // console.log('Received:', { email, password });
 
         const user = await UserModel.findOne({ email }).select('+password'); // صراحتاً password رو انتخاب کنید
-        console.log('User found:', { email: user?.email, passwordExists: !!user?.password, password: user?.password });
+        // console.log('User found:', { email: user?.email, passwordExists: !!user?.password, password: user?.password });
 
         if (!user) {
             return NextResponse.json({ error: 'کاربر پیدا نشد' }, { status: 404 });
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'پسورد نامعتبر' }, { status: 401 });
         }
 
-        console.log('JWT_SECRET:', process.env.JWT_SECRET);
+        // console.log('JWT_SECRET:', process.env.JWT_SECRET);
         if (!process.env.JWT_SECRET) {
             throw new Error('JWT_SECRET is not defined');
         }
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
-        console.log('Generated token:', token);
+        // console.log('Generated token:', token);
 
         return NextResponse.json({
             user: { email: user.email, name: user.name },
