@@ -3,7 +3,7 @@ import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import Navbar from "@/app/components/assets/navbar/Navbar";
 import ChildrenLayout from "@/app/components/assets/children/ChildrenLayout";
-import {BackgroundBeamsWithCollision} from "@/app/components/assets/ui/BackgroundBeamsWithCollision";
+// import {BackgroundBeamsWithCollision} from "@/app/components/assets/ui/BackgroundBeamsWithCollision";
 import Providers from "@/app/components/assets/providers/providers";
 
 const geistSans = Geist({
@@ -29,15 +29,15 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
         >
         <Providers>
-            <BackgroundBeamsWithCollision>
+            {/*<BackgroundBeamsWithCollision>*/}
                 <Navbar/>
                 <ChildrenLayout>
                     {children}
                 </ChildrenLayout>
-            </BackgroundBeamsWithCollision>
+            {/*</BackgroundBeamsWithCollision>*/}
         </Providers>
         </body>
         </html>

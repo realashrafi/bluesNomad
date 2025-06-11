@@ -79,7 +79,7 @@ const GridItem = ({area, icon, title, description}: GridItemProps) => {
                     inactiveZone={0.01}
                 />
                 <motion.div
-                    className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D]"
+                    className="relative flex h-full  backdrop-blur  flex-col justify-between gap-6 overflow-hidden rounded-2xl p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D]"
                     variants={hoverVariants}
                 >
                     <div className="relative flex flex-1 flex-col justify-between gap-3">

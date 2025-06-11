@@ -76,6 +76,7 @@ const UserGrid: React.FC<UserGridProps> = ({ users }) => {
                                                 level="H" // سطح خطاگیری بالا برای حفظ خوانایی
                                                 className="rounded-md"
                                             />
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
                                                 src="/images/zboomLogo.png" // مسیر آیکون خود را وارد کنید
                                                 alt="Icon"

@@ -4,7 +4,7 @@ import React, {useEffect} from 'react';
 import Link from "next/link";
 import {usePathname, useRouter} from 'next/navigation';
 import Cookies from "js-cookie";
-import {Vortex} from "@/app/components/assets/ui/vortex";
+// import {Vortex} from "@/app/components/assets/ui/vortex";
 
 function Navbar() {
     const pathname = usePathname();
@@ -50,15 +50,17 @@ function Navbar() {
     }
 
     return (
-        <Vortex
-            backgroundColor="black"
-            rangeY={800}
-            particleCount={100}
-            baseHue={220}
-            className="max-w-full mx-auto text-green-400 p-4 bg-transparent rounded shadow "
+        <div
+            // backgroundColor="black"
+            // rangeY={800}
+            // particleCount={100}
+            // baseHue={220}
+            className="max-w-full  mx-auto bg-white/10  text-green-400 p-4  shadow "
         >
-            <Link href={'/'}>Home</Link>
-        </Vortex>
+
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <Link href={'/'}><img className={'w-10'} src={'/images/zboomLogo.png'} alt={'logo'} /></Link>
+        </div>
     );
 }
 

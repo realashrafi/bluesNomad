@@ -58,8 +58,8 @@ export default function Dashboard() {
         {
             id: 1,
             // title: 'Game Room',
-            description:  <div className="max-w-md mx-auto   rounded shadow">
-                <h1 className="text-2xl font-bold mb-4">WellCome</h1>
+            description:  <div className="max-w-md mx-auto text-white  rounded shadow">
+                <h1 className="text-2xl font-bold mb-4">Welcome</h1>
                 <p><strong>Email:</strong> {user.email}</p>
                 {user.name && <p><strong>Name:</strong> {user.name}</p>}
                 <button
