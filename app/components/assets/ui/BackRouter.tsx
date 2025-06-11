@@ -6,7 +6,7 @@ import {GoArrowLeft} from "react-icons/go";
 function BackRouter() {
     const router = useRouter();
     const pathname = usePathname();
-    const hiddenRoutes = ['/login', '/register', '/','/hub0/game/zboom'];
+    const hiddenRoutes = ['/login', '/register', '/','/hub0/game/zboom','/hub0/game/admin/wheel'];
     if (hiddenRoutes.includes(pathname)) {
         return null;
     }
